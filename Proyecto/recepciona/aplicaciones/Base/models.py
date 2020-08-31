@@ -51,6 +51,7 @@ class Roles(ModeloBase):
 class Usuario(ModeloBase):
     nombres = models.CharField('Nombres', max_length=40)
     direccion_usuario = models.ForeignKey(Direccion, on_delete=models.CASCADE)
+    email = models.EmailField('e-mail')
     contrasenia = models.CharField('Contraseña', max_length=40)
     apellidop = models.CharField('Apellido paterno', max_length=40)
     apellidom = models.CharField('Apellido materno', max_length=40)
