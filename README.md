@@ -1,3 +1,8 @@
-# Tesis-2020
-Proyecto para seminario de grado.
+# RecepcionSport
+
+Una plataforma web para gestionar reservas de canchas deportivas.
+
 Integrantes: Gabriel Barria-Nicol Quintuy
+
+
+
