@@ -26,14 +26,15 @@ class Comuna(ModeloBase):
     def __str__(self):
         return self.nombre_comuna
 
-class Direccion(ModeloBase):
+class Ciudad(ModeloBase):
+    nombre_ciudad = models.CharField('Ciudad', max_length=50)
     comuna = models.ForeignKey(Comuna, on_delete = models.CASCADE)
-    calle = models.CharField('Calle', max_length=100)
-    numero = models.IntegerField('Numero')
 
     class Meta:
-        verbose_name = 'Direccion'
-        verbose_name_plural = 'Direcciones'
+        verbose_name = 'Ciudad'
+        verbose_name_plural = 'Ciudades'
+    def __str__(self):
+        return self.nombre_ciudad
 
 #A partir de aqui se ingresan los modelos para usuarios
 
@@ -48,21 +49,32 @@ class Roles(ModeloBase):
 
 
 #crear modelo de usuario
-class Usuario(ModeloBase):
+
+class Persona(ModeloBase):
     nombres = models.CharField('Nombres', max_length=40)
-    direccion_usuario = models.ForeignKey(Direccion, on_delete=models.CASCADE)
-    email = models.EmailField('e-mail')
-    contrasenia = models.CharField('Contraseña', max_length=40)
     apellidop = models.CharField('Apellido paterno', max_length=40)
     apellidom = models.CharField('Apellido materno', max_length=40)
+    direccion = models.CharField('Direccion', max_length=60)
+    ciudad = models.ForeignKey(Ciudad, on_delete = models.CASCADE)
+    email = models.EmailField('e-mail')
+
+
+class Usuario(ModeloBase):     
+    contrasenia = models.CharField('Contraseña', max_length=40)
     role = models.ForeignKey(Roles, on_delete = models.CASCADE)
 
     class Meta:
         verbose_name = 'Usuario'
         verbose_name_plural = 'Usuarios'
 
-    def __str__(self):
-        return self.nombres
+class Ubicacion(ModeloBase):
+    lat = models.CharField('Latitud', max_length=100)
+    lng = models.CharField('Longitud', max_length=100)
+
+
+class CentroDeportivo(ModeloBase):
+     Nombre = models.CharField('Nombre', max_length = 40)
+     direccion = models.ForeignKey(Ubicacion, on_delete=models.CASCADE)  
 
 #A partir de aqui se definen los modelos para canchas
 class Superficie(ModeloBase):
@@ -102,20 +114,11 @@ class cancha(ModeloBase):
     servicios = models.ManyToManyField(Servicio)
     tipo_cancha = models.ForeignKey(Tipo_cancha, on_delete = models.CASCADE)
     superfice = models.ForeignKey(Superficie, on_delete = models.CASCADE)
-    usuario_cancha = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    centro_dep = models.ForeignKey(CentroDeportivo, on_delete = models.CASCADE)
 
     class Meta:
         verbose_name = 'Cancha'
         verbose_name_plural = 'Canchas'
-    def __str__(self):
-        return self.nombre
-class Dias(ModeloBase):
-    nombre = models.CharField('Dia', max_length=20)
-
-    class Meta:
-        verbose_name = 'Dia'
-        verbose_name_plural = 'Dias'
-
     def __str__(self):
         return self.nombre
 
@@ -123,7 +126,7 @@ class Horario(ModeloBase):
     cancha = models.ForeignKey(cancha, on_delete=models.CASCADE)
     hora_inicio = models.TimeField('hora inicio')
     hora_termino = models.TimeField('hora termino')
-    dia = models.ForeignKey(Dias, on_delete=models.CASCADE)
+    dia = models.CharField('Dia de semana', max_length=15)
 
     class Meta:
         verbose_name = 'Horario'
