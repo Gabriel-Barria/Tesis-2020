@@ -99,6 +99,7 @@ class Tipo_cancha(ModeloBase):
 
 
 class Servicio(ModeloBase):
+    estado = models.BooleanField('Estado', default=True)
     nombre = models.CharField('Nombre', max_length=40) 
     class Meta:
         verbose_name = 'Servicio'
