@@ -5,6 +5,17 @@ class ServicioForm(forms.ModelForm):
     class Meta:
         model = Servicio
         fields = ['nombre']
+        labels = {
+            'nombre': 'Nombre del servicio',
+        }
+        widgets = {
+            'nombre': forms.TextInput(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Ingrese nombre',
+                    'id': 'nombre',
+            })
+        }
 
 class SuperficieForm(forms.ModelForm):
     class Meta:

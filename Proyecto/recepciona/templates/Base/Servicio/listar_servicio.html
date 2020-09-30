@@ -7,7 +7,7 @@ Listado Servicio
 {% block body %}
 
     {% if object_list %}
-
+<a href="{% url 'Base:crear_servicio' %}" class="btn btn-primary">Agregar servicio</a>
 <div class="card">
   <div class="card-header">         
         <strong class="card-title">Listado de servicios</strong>
@@ -18,7 +18,8 @@ Listado Servicio
       <thead>
         <tr>
           <th>#</th>
-          <th>Nombre</th>          
+          <th>Nombre</th>   
+          <th>Opciones</th>        
         </tr>
       </thead>
       <tbody>
@@ -27,7 +28,8 @@ Listado Servicio
             <tr>
             <td>{{ servicio.id}}</td>
             <td>{{ servicio.nombre }}</td>
-            </tr>
+            <td><a href="{% url 'Base:editar_servicio' servicio.id %}" class="btn btn-primary">Editar</a> <a href="{% url 'Base:eliminar_servicio' servicio.id %}" class="btn btn-danger">Eliminar</a></td>
+          </tr>
             {% endfor %}
         
       </tbody>
@@ -36,6 +38,7 @@ Listado Servicio
   
     {% else %}
     <h1>No existe servicios</h1>
+    <a href="{% url 'Base:crear_servicio' %}" class="btn btn-primary">Agregar servicio</a>
     {% endif %}   
 </div>
 {% endblock body %}

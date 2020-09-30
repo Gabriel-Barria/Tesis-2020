@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+
+{% block titulo %}
+Listado Cancha
+{% endblock titulo %}
+
+{% block body %}
+
+    {% if object_list %}
+
+<div class="card">
+  <div class="card-header">         
+        <strong class="card-title">Listado de cancha</strong>
+      </div>      
+    
+  <div class="table-stats order-table ov-h">
+    <table id="tabla_libros" class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>   
+          <th>Opciones</th>        
+        </tr>
+      </thead>
+      <tbody>
+          
+            {% for servicio in object_list %}
+            <tr>
+            <td>{{ servicio.id}}</td>
+            <td>{{ servicio.nombre }}</td>
+            <td><button type="button" class="btn btn-danger">Eliminar</button> <button type="button" class="btn btn-primary">Editar</button></td>
+            </tr>
+            {% endfor %}
+        
+      </tbody>
+    </table>    
+  </div>
+  
+    {% else %}
+    <h1>No existe servicios</h1>
+    {% endif %}   
+</div>
+{% endblock body %}
+

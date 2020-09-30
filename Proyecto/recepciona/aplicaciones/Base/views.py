@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from .forms import ServicioForm, SuperficieForm, CentroForm, HorarioForm, CanchaForm, TipoForm
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DeleteView
 from .models import Servicio
+from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse_lazy
 
 #Create your views here.
 
@@ -10,18 +12,26 @@ class Inicio(TemplateView):
 
 class ListadoServicio(ListView):
     model = Servicio
-    template_name = 'Base/listar_servicio.html'
+    template_name = 'Base/Servicio/listar_servicio.html'
     queryset = Servicio.objects.filter(estado=True)
-       
-def crearServicio(request):
-    if request.method == 'POST':
-        servicio_form = ServicioForm(request.POST)
-        if servicio_form.is_valid():
-            servicio_form.save()
-            return redirect('index')
-    else:
-        servicio_form = ServicioForm()
-    return render(request,'Base/crear_servicio.html',{'servicio_form':servicio_form})
+class ActualizarServicio(UpdateView):
+    model = Servicio
+    template_name = 'Base/Servicio/crear_servicio.html'
+    form_class = ServicioForm
+    success_url = reverse_lazy('Base:listar_servicio')
+class CrearServicio(CreateView):
+    model = Servicio
+    template_name = 'Base/Servicio/crear_servicio.html'
+    form_class = ServicioForm
+    success_url = reverse_lazy('Base:listar_servicio')
+class EliminarServicio(DeleteView):
+    model = Servicio    
+
+    def post(self, request, pk, *args, **kwargs):
+        object = Servicio.objects.get(id=pk)
+        object.estado = False
+        object.save()
+        return redirect('Base:listar_servicio')
 
 def crearSuperficie(request):
     if request.method == 'POST':
@@ -31,7 +41,7 @@ def crearSuperficie(request):
             return redirect('index')
     else:
         superficie_form = SuperficieForm()
-    return render(request,'Base/crear_servicio.html',{'servicio_form':superficie_form})
+    return render(request,'Base/Superficie/crear_servicio.html',{'servicio_form':superficie_form})
 
 def crearCentro(request):
     if request.method == 'POST':
@@ -41,7 +51,7 @@ def crearCentro(request):
             return redirect('index')
     else:
         centro_form = CentroForm()
-    return render(request,'Base/crear_centro.html',{'centro_form':centro_form})
+    return render(request,'Base/Centro_deportivo/crear_centro.html',{'centro_form':centro_form})
 
 def crearHorario(request):
     if request.method == 'POST':
@@ -51,7 +61,7 @@ def crearHorario(request):
             return redirect('index')
     else:
         horario_form = HorarioForm()
-    return render(request,'Base/crear_horario.html',{'horario_form':horario_form})
+    return render(request,'Base/Horario/crear_horario.html',{'horario_form':horario_form})
 
 def crearCancha(request):
     if request.method == 'POST':
@@ -61,7 +71,7 @@ def crearCancha(request):
             return redirect('index')
     else:
         cancha_form = CanchaForm()
-    return render(request,'Base/crear_cancha.html',{'cancha_form':cancha_form})
+    return render(request,'Base/Cancha/crear_cancha.html',{'cancha_form':cancha_form})
 
 def crearTipo(request):
     if request.method == 'POST':
@@ -71,7 +81,7 @@ def crearTipo(request):
             return redirect('index')
     else:
         tipo_form = TipoForm()
-    return render(request,'Base/crear_tipo.html',{'tipo_form':tipo_form})
+    return render(request,'Base/Tipo_Cancha/crear_tipo.html',{'tipo_form':tipo_form})
 
 
 
