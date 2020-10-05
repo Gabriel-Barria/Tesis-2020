@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': 'db.recepcion',
         'USER': 'root',
         'PASSWORD':'n1a2x3o4',
-        'HOST':'localhost',
+        'HOST':'127.0.0.1',
         'PORT': 3306,
     }
 }

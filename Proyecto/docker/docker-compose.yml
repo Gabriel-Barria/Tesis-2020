@@ -1,0 +1,21 @@
+version: "3.8"
+   
+services:
+  db:
+    image: mysql:5.7.31 
+    environment:
+      - MYSQL_ROOT_PASSWORD=n1a2x3o4
+      - MYSQL_DATABASE=db.recepcion
+      - MYSQL_USER=user
+      - MYSQL_MYSQL_PASSWORD=n1a2x3o4
+    ports:
+      - "3306:3306"
+  web:
+    build: .
+    command: bash -c "python3 /code/manage.py makemigrations && python3 /code/manage.py migrate && python3 /code/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ../recepciona/:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
