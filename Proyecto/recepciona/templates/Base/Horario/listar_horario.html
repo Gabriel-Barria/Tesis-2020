@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+
+{% block titulo %}
+Listado Servicio
+{% endblock titulo %}
+
+{% block body %}
+
+    {% if object_list %}
+<a href="{% url 'Base:crear_horario' %}" class="btn btn-primary">Agregar horario</a>
+<div class="card">
+  <div class="card-header">         
+        <strong class="card-title">Listado de horarios</strong>
+      </div>      
+    
+  <div class="table-stats order-table ov-h">
+    <table id="tabla_libros" class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Cancha</th>   
+          <th>Hora inicio</th> 
+          <th>Hora termino</th> 
+          <th>Dia</th>          
+        </tr>
+      </thead>
+      <tbody>
+          
+            {% for horario in object_list %}
+            <tr>
+            <td>{{ horario.id}}</td>
+            <td>{{ horario.cancha }}</td>
+            <td>{{ horario.hora_inicio }}</td>
+            <td>{{ horario.hora_termino }}</td>
+            <td>{{ horario.dia }}</td>
+            <td><a href="{% url 'Base:editar_horario' horario.id %}" class="btn btn-primary">Editar</a> <a href="{% url 'Base:eliminar_horario' horario.id %}" class="btn btn-danger">Eliminar</a></td>
+          </tr>
+            {% endfor %}
+        
+      </tbody>
+    </table>    
+  </div>
+  
+    {% else %}
+    
+    <h1>No existen horarios</h1>
+    <a href="{% url 'Base:crear_horario' %}" class="btn btn-primary">Agregar horario</a>
+    {% endif %}   
+</div>
+{% endblock body %}
+

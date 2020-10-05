@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+
+{% block titulo %}
+Listado Superficie
+{% endblock titulo %}
+
+{% block body %}
+
+    {% if object_list %}
+<a href="{% url 'Base:crear_superficie' %}" class="btn btn-primary">Agregar superficie</a>
+<div class="card">
+  <div class="card-header">         
+        <strong class="card-title">Listado de superficie</strong>
+      </div>      
+    
+  <div class="table-stats order-table ov-h">
+    <table id="tabla_libros" class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>   
+          <th>Opciones</th>        
+        </tr>
+      </thead>
+      <tbody>
+          
+            {% for superficie in object_list %}
+            <tr>
+            <td>{{ superficie.id}}</td>
+            <td>{{ superficie.nombre }}</td>
+            <td><a href="{% url 'Base:editar_superficie' superficie.id %}" class="btn btn-primary">Editar</a> <a href="{% url 'Base:eliminar_superficie' superficie.id %}" class="btn btn-danger">Eliminar</a></td>
+          </tr>
+            {% endfor %}
+        
+      </tbody>
+    </table>    
+  </div>
+  
+    {% else %}
+    <h1>No existe servicios</h1>
+    <a href="{% url 'Base:crear_superficie' %}" class="btn btn-primary">Agregar</a>
+    {% endif %}   
+</div>
+{% endblock body %}
+

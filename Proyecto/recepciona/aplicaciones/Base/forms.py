@@ -1,5 +1,5 @@
 from django import forms
-from .models import Servicio, Superficie, cancha, Horario, CentroDeportivo, Tipo_cancha
+from .models import Servicio, Superficie, cancha, Horario, CentroDeportivo, Tipo_cancha, Provincias
 
 class ServicioForm(forms.ModelForm):
     class Meta:
@@ -40,5 +40,9 @@ class HorarioForm(forms.ModelForm):
 class CentroForm(forms.ModelForm):
     class Meta:
         model = CentroDeportivo
-        fields = ['Nombre','direccion']
+        fields = ['Nombre' , 'direccion', 'region', 'provincia', 'comuna']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['provincia'].queryset = Provincias.objects.none()
 

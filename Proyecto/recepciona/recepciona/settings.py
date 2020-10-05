@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'recepciona.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db.recepcion',
+        'USER': 'root',
+        'PASSWORD':'n1a2x3o4',
+        'HOST':'localhost',
+        'PORT': 3306,
     }
 }
 

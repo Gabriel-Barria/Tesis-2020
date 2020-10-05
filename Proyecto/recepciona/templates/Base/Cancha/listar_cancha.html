@@ -8,6 +8,7 @@ Listado Cancha
 
     {% if object_list %}
 
+<a href="{% url 'Base:crear_cancha' %}" class="btn btn-primary">Agregar Cancha</a>
 <div class="card">
   <div class="card-header">         
         <strong class="card-title">Listado de cancha</strong>
@@ -18,16 +19,30 @@ Listado Cancha
       <thead>
         <tr>
           <th>#</th>
-          <th>Nombre</th>   
+          <th>Nombre</th> 
+          <th>Descripcion</th> 
+          <th>Direccion</th> 
+          <th>Valor</th> 
+          <th>Servicios</th> 
+          <th>tipo_cancha</th> 
+          <th>superfice</th> 
+          <th>centro_dep</th> 
           <th>Opciones</th>        
         </tr>
       </thead>
       <tbody>
           
-            {% for servicio in object_list %}
+            {% for cancha in object_list %}
             <tr>
-            <td>{{ servicio.id}}</td>
-            <td>{{ servicio.nombre }}</td>
+            <td>{{ cancha.id}}</td>
+            <td>{{ cancha.nombre }}</td>
+            <td>{{ cancha.descripcion }}</td>
+            <td>{{ cancha.direccion}}</td>
+            <td>{{ cancha.valor }}</td>
+            <td>{{ cancha.servicio }}</td>
+            <td>{{ cancha.tipo_cancha}}</td>
+            <td>{{ cancha.superfice}}</td>
+            <td>{{ cancha.centro_dep}}</td>          
             <td><button type="button" class="btn btn-danger">Eliminar</button> <button type="button" class="btn btn-primary">Editar</button></td>
             </tr>
             {% endfor %}
@@ -37,7 +52,8 @@ Listado Cancha
   </div>
   
     {% else %}
-    <h1>No existe servicios</h1>
+    <h1>No existen Canchas</h1>
+    <a href="{% url 'Base:crear_cancha' %}" class="btn btn-primary">Agregar cancha</a>
     {% endif %}   
 </div>
 {% endblock body %}

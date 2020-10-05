@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear servicio</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        {{ tipo_form.as_p }}
-
-        <button type="submit">crear</button>
+{% extends 'index.html' %}
+{% block titulo %}
+Crear tipo de cancha
+{% endblock titulo %}
+{% block body %}
+    {% if error %}
+        <h2>{{ error }}</h2>
+    {% else %} 
+        <form method="POST">
+        {% csrf_token %}  
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Crear</button>               
     </form>
-</body>
-</html>v
+    {% endif %} 
+{% endblock body %}

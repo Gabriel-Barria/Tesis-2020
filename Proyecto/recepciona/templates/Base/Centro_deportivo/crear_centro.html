@@ -1,16 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear cancha</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        {{ centro_form.as_p }}
-
-        <button type="submit">crear</button>
+{% extends 'index.html' %}
+{% block titulo %}
+Crear centro deportivo
+{% endblock titulo %}
+{% block body %}
+    {% if error %}
+        <h2>{{ error }}</h2>
+    {% else %} 
+        <form method="POST" id="CentroForm" data-provinicias-url="{% url 'ajax_cargar_provincias' %}" novalidate>
+        {% csrf_token %}  
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Crear</button>               
     </form>
-</body>
-</html>
+    {% endif %} 
+{% endblock body %}
+{% block extrajs %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $("#region_id").change(function () {
+      var url = $("#CentroForm").attr("data-provincias-url");  // get the url of the `load_cities` view
+      var region_id = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'provincia': region_id       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#provincia_id").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+{% endblock extrajs %}

@@ -2,39 +2,45 @@ from django.db import models
 
 class ModeloBase(models.Model):
     id = models.AutoField(primary_key=True)
+    estado = models.BooleanField('Estado', default=True)
 
     class Meta:
         abstract = True
 
 #Aqui estaran todos los modulos relacionados con las direcciones
-class Region(ModeloBase):
-    nombre_region = models.CharField('Nombre region', max_length=40)
+class Regiones(models.Model):
+    region_id = models.AutoField(primary_key=True)
+    region_nombre = models.CharField('Nombre region', max_length = 100)
+    region_ordinal = models.CharField('Region ordinal', max_length = 4)
 
     class Meta:
         verbose_name = 'Region'
         verbose_name_plural = 'Regiones'
     def __str__(self):
-        return self.nombre_region
+        return self.region_nombre
 
-class Comuna(ModeloBase):
-    nombre_comuna = models.CharField('Nombre comuna', max_length=40)
-    region = models.ForeignKey(Region, on_delete = models.CASCADE)
+class Provincias(models.Model):
+    provincia_id = models.AutoField(primary_key=True)
+    provincia_nombre = models.CharField('Nombre provincia', max_length = 100)
+    region = models.ForeignKey(Regiones, on_delete = models.CASCADE)
+
+
+    class Meta:
+        verbose_name = 'Provincia'
+        verbose_name_plural = 'Provincias'
+    def __str__(self):
+        return self.provincia_nombre
+
+class Comunas(models.Model):
+    comuna_id = models.AutoField(primary_key=True)
+    comuna_nombre = models.CharField('Nombre comuna', max_length = 100)
+    provincia = models.ForeignKey(Provincias, on_delete = models.CASCADE)
 
     class Meta:
         verbose_name = 'Comuna'
         verbose_name_plural = 'Comunas'
     def __str__(self):
-        return self.nombre_comuna
-
-class Ciudad(ModeloBase):
-    nombre_ciudad = models.CharField('Ciudad', max_length=50)
-    comuna = models.ForeignKey(Comuna, on_delete = models.CASCADE)
-
-    class Meta:
-        verbose_name = 'Ciudad'
-        verbose_name_plural = 'Ciudades'
-    def __str__(self):
-        return self.nombre_ciudad
+        return self.comuna_nombre
 
 #A partir de aqui se ingresan los modelos para usuarios
 
@@ -55,7 +61,9 @@ class Persona(ModeloBase):
     apellidop = models.CharField('Apellido paterno', max_length=40)
     apellidom = models.CharField('Apellido materno', max_length=40)
     direccion = models.CharField('Direccion', max_length=60)
-    ciudad = models.ForeignKey(Ciudad, on_delete = models.CASCADE)
+    region = models.ForeignKey(Regiones, on_delete = models.CASCADE)
+    provincia = models.ForeignKey(Provincias, on_delete = models.CASCADE)
+    comuna = models.ForeignKey(Comunas, on_delete = models.CASCADE)
     email = models.EmailField('e-mail')
 
 
@@ -74,7 +82,11 @@ class Ubicacion(ModeloBase):
 
 class CentroDeportivo(ModeloBase):
      Nombre = models.CharField('Nombre', max_length = 40)
-     direccion = models.ForeignKey(Ubicacion, on_delete=models.CASCADE)  
+     direccion = models.CharField('Direccion', max_length = 100)
+     region = models.ForeignKey(Regiones, on_delete = models.CASCADE)
+     comuna = models.ForeignKey(Comunas, on_delete = models.CASCADE)
+     provincia = models.ForeignKey(Provincias, on_delete = models.CASCADE)
+     
 
 #A partir de aqui se definen los modelos para canchas
 class Superficie(ModeloBase):
@@ -98,8 +110,7 @@ class Tipo_cancha(ModeloBase):
         return self.nombre
 
 
-class Servicio(ModeloBase):
-    estado = models.BooleanField('Estado', default=True)
+class Servicio(ModeloBase):    
     nombre = models.CharField('Nombre', max_length=40) 
     class Meta:
         verbose_name = 'Servicio'

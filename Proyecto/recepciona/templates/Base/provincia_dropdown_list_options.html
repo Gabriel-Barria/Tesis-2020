@@ -1,0 +1,10 @@
+{% extends 'index.html' %}
+{% block titulo %}
+Crear centro deportivo
+{% endblock titulo %}
+{% block body %}
+<option value="">---------</option>
+{% for provincia in provincias %}
+<option value="{{ provincia.pk }}">{{ provincia.provincia_nombre }}</option>
+{% endfor %}
+{% endblock body %}
