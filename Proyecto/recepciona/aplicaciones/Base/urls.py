@@ -1,5 +1,5 @@
-from django.urls import path
-from .views import CrearServicio, ListadoServicio, ActualizarServicio, EliminarServicio, CrearCancha, ListadoCancha, ActualizarCancha, EliminarCancha, CrearSuperficie, ListadoSuperficie, ActualizarSuperficie, EliminarSuperficie, CrearHorario, ListadoHorario, ActualizarHorario, EliminarHorario, CrearCentro, ListadoCentro, ActualizarCentro, EliminarCentro, cargar_provincias, CrearTipo, ListadoTipo, ActualizarTipo, EliminarTipo
+from django.urls import include, path
+from .views import CrearServicio, ListadoServicio, ActualizarServicio, EliminarServicio, CrearCancha, ListadoCancha, ActualizarCancha, EliminarCancha, CrearSuperficie, ListadoSuperficie, ActualizarSuperficie, EliminarSuperficie, CrearHorario, ListadoHorario, ActualizarHorario, EliminarHorario, CrearCentro, ListadoCentro, ActualizarCentro, EliminarCentro, CrearTipo, ListadoTipo, ActualizarTipo, EliminarTipo
 from . import views
 urlpatterns = [
     path('Servicio/crear_servicio/',CrearServicio.as_view(), name = 'crear_servicio'),
@@ -26,8 +26,8 @@ urlpatterns = [
     path('Centro_deportivo/listar_centro/',ListadoCentro.as_view(), name = 'listar_centro'),
     path('Centro_deportivo/editar_centro/<int:pk>',ActualizarCentro.as_view(), name = 'editar_centro'),
     path('Centro_deportivo/eliminar_centro/<int:pk>',EliminarCentro.as_view(), name = 'eliminar_centro'),
-    path('ajax/cargar-provincias/', views.cargar_provincias, name='ajax_cargar_provincias'),
     
+   
     #CRUD TIPO
     path('Tipo_Cancha/crear_tipo/',CrearTipo.as_view(), name = 'crear_tipo'),
     path('Tipo_Cancha/listar_tipo/',ListadoTipo.as_view(), name = 'listar_tipo'),

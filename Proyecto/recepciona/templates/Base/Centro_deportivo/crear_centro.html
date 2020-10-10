@@ -6,30 +6,54 @@ Crear centro deportivo
     {% if error %}
         <h2>{{ error }}</h2>
     {% else %} 
-        <form method="POST" id="CentroForm" data-provinicias-url="{% url 'ajax_cargar_provincias' %}" novalidate>
-        {% csrf_token %}  
-        {{ form.as_p }}
+        <form method="POST" id="centroForm" data-provincias-url="{% url 'ajax_cargar_provincias' %}" novalidate data-comunas-url="{% url 'ajax_cargar_comunas' %}" novalidate> 
+        {% csrf_token %} 
+       
+            {{ form.as_p }}
+         
         <button type="submit" class="btn btn-primary">Crear</button>               
     </form>
-    {% endif %} 
+    {% endif %}  
 {% endblock body %}
+
 {% block extrajs %}
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script>
-    $("#region_id").change(function () {
-      var url = $("#CentroForm").attr("data-provincias-url");  // get the url of the `load_cities` view
-      var region_id = $(this).val();  // get the selected country ID from the HTML input
+    $("#id_region").change(function () {
+      var url = $("#centroForm").attr("data-provincias-url");
+      var regionId = $(this).val();     
 
-      $.ajax({                       // initialize an AJAX request
-        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      $.ajax({
+        url: url,
+        
         data: {
-          'provincia': region_id       // add the country id to the GET parameters
+          'region': regionId,        
+
         },
-        success: function (data) {   // `data` is the return of the `load_cities` view function
-          $("#provincia_id").html(data);  // replace the contents of the city input with the data that came from the server
+        success: function (data) {
+          $("#id_provincia").html(data);         
+
         }
       });
+ 
+    });
+    $("#id_provincia").change(function () {
+      var url = $("#centroForm").attr("data-comunas-url");
+      var provinciaId = $(this).val();     
 
+      $.ajax({
+        url: url,
+        
+        data: {
+          'provincia': provinciaId,        
+
+        },
+        success: function (data) {
+          $("#id_comuna").html(data);       
+
+        }
+      });
+ 
     });
   </script>
-{% endblock extrajs %}
+  {% endblock extrajs %}

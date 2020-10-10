@@ -39,7 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'aplicaciones.Base',]
+    'aplicaciones.Base',
+    'django_static_jquery3',
+    'django_static_arrive',
+    'django_cascading_dropdown_widget',  
+    'widget_tweaks',   
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

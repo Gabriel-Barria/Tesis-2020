@@ -16,11 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from aplicaciones.Base.views import Inicio
+from aplicaciones.Base.views import cargar_provincias, cargar_comunas
+from aplicaciones.Base import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('Base/',include(('aplicaciones.Base.urls','Base'))),
     path('',Inicio.as_view(), name = 'index'),
+    path('ajax/cargar-provincias/', views.cargar_provincias, name='ajax_cargar_provincias'),
+    path('ajax/cargar-comunas/', views.cargar_comunas, name='ajax_cargar_comunas'),
 
 ]

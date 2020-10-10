@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from .forms import ServicioForm, SuperficieForm, CentroForm, HorarioForm, CanchaForm, TipoForm
 from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DeleteView
-from .models import Servicio, Superficie, CentroDeportivo, Horario, cancha, Tipo_cancha, Provincias
+from .models import Servicio, Superficie, CentroDeportivo, Horario, cancha, Tipo_cancha, Provincias, Comunas
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
+
 
 #Vistas basadas en clases: CRUD Servicio
 
@@ -69,7 +70,7 @@ class ListadoCentro(ListView):
 
 class ActualizarCentro(UpdateView):
     model = CentroDeportivo
-    template_name = 'Base/Centro_deportivo/listar_centro.html'
+    template_name = 'Base/Centro_deportivo/crear_centro.html'
     form_class = CentroForm
     success_url = reverse_lazy('Base:listar_centro')
 
@@ -89,11 +90,14 @@ class EliminarCentro(DeleteView):
         return redirect('Base:listar_centro')
 
 def cargar_provincias(request):
-
     region_id = request.GET.get('region')
-    provincias = Provincias.objects.filter(region_id = region_id)
-    return render(request, 'Base/provincia_dropdown_list_options.html', {'provincias': provincias})
+    provincias = Provincias.objects.filter(region_id=region_id)
+    return render(request, 'provincia_dropdown_list_options.html', {'provincias': provincias})
 
+def cargar_comunas(request):
+    provincia_id = request.GET.get('provincia')
+    comunas = Comunas.objects.filter(provincia_id=provincia_id)
+    return render(request, 'comuna_dropdown_list_options.html', {'comunas': comunas})
 #CRUD Horario 
 
 class ListadoHorario(ListView):
