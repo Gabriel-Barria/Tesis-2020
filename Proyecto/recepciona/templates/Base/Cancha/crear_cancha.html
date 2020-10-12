@@ -14,4 +14,20 @@ Crear servicio
     {% endif %} 
 {% endblock body %}
 
+{% block extrajs %}
+<script>
+
+$(function () {
+    $('select[id="region"]').on('change', function () {
+        alert('x');
+    })
+
+
+})
+
+
+
+</script>
+{% endblock extrajs %}
+
 

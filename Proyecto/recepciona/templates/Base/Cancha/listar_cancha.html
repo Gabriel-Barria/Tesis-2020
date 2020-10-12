@@ -43,7 +43,7 @@ Listado Cancha
             <td>{{ cancha.tipo_cancha}}</td>
             <td>{{ cancha.superfice}}</td>
             <td>{{ cancha.centro_dep}}</td>          
-            <td><button type="button" class="btn btn-danger">Eliminar</button> <button type="button" class="btn btn-primary">Editar</button></td>
+            <td><a href="{%url 'Base:editar_cancha' cancha.id%}" class="btn btn-primary">Editar</a><a href="{%url 'Base:eliminar_cancha' cancha.id%}" class="btn btn-danger">Eliminar</a></td>
             </tr>
             {% endfor %}
         

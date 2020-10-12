@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from .forms import ServicioForm, SuperficieForm, CentroForm, HorarioForm, CanchaForm, TipoForm
 from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DeleteView
-from .models import Servicio, Superficie, CentroDeportivo, Horario, cancha, Tipo_cancha, Provincias, Comunas
+from .models import Servicio, Superficie, CentroDeportivo, Horario, cancha, Tipo_cancha, Regiones, Provincias, Comunas
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator 
 
 
 #Vistas basadas en clases: CRUD Servicio
@@ -52,6 +55,10 @@ class CrearSuperficie(CreateView):
     form_class = SuperficieForm
     success_url = reverse_lazy('Base:listar_superficie')
 
+    
+        
+    
+
 class EliminarSuperficie(DeleteView):
     model = Superficie   
 
@@ -74,12 +81,27 @@ class ActualizarCentro(UpdateView):
     form_class = CentroForm
     success_url = reverse_lazy('Base:listar_centro')
 
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs.get('pk')
+
+        context = super(ActualizarCentro, self).get_context_data(**kwargs)
+        context["region"] = Regiones.objects.all()  
+        context["provincia"] = Provincias.objects.all()
+        context["comuna"] = Comunas.objects.all()
+        context["obj"] = CentroDeportivo.objects.filter(pk=pk).first()
+        return context
+
 class CrearCentro(CreateView):
     model = CentroDeportivo
     template_name = 'Base/Centro_deportivo/crear_centro.html'
     form_class = CentroForm
     success_url = reverse_lazy('Base:listar_centro')
-
+    def get_context_data(self, **kwargs):
+        context = super(CrearCentro, self).get_context_data(**kwargs)
+        context["region"] = Regiones.objects.all()  
+        context["provincia"] = Provincias.objects.all()
+        context["comuna"] = Comunas.objects.all()
+        return context
 class EliminarCentro(DeleteView):
     model = CentroDeportivo  
 
@@ -89,15 +111,6 @@ class EliminarCentro(DeleteView):
         object.save()
         return redirect('Base:listar_centro')
 
-def cargar_provincias(request):
-    region_id = request.GET.get('region')
-    provincias = Provincias.objects.filter(region_id=region_id)
-    return render(request, 'provincia_dropdown_list_options.html', {'provincias': provincias})
-
-def cargar_comunas(request):
-    provincia_id = request.GET.get('provincia')
-    comunas = Comunas.objects.filter(provincia_id=provincia_id)
-    return render(request, 'comuna_dropdown_list_options.html', {'comunas': comunas})
 #CRUD Horario 
 
 class ListadoHorario(ListView):
@@ -110,6 +123,8 @@ class ActualizarHorario(UpdateView):
     template_name = 'Base/Horario/listar_horario.html'
     form_class = HorarioForm
     success_url = reverse_lazy('Base:listar_horario')
+
+    
 
 class CrearHorario(CreateView):
     model = Horario
@@ -134,7 +149,7 @@ class ListadoCancha(ListView):
 
 class ActualizarCancha(UpdateView):
     model = cancha
-    template_name = 'Base/Cancha/listar_cancha.html'
+    template_name = 'Base/Cancha/crear_cancha.html'
     form_class = CanchaForm
     success_url = reverse_lazy('Base:listar_cancha')
 
@@ -180,11 +195,3 @@ class EliminarTipo(DeleteView):
         object.estado = False
         object.save()
         return redirect('Base:listar_tipo')
-    
-
-
-
-
-
-
-

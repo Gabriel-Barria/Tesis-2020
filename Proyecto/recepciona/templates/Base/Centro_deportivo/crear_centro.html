@@ -1,4 +1,8 @@
 {% extends 'index.html' %}
+{% load staticfiles %}
+{% block extra_css %}
+{% endblock extra_css %}
+
 {% block titulo %}
 Crear centro deportivo
 {% endblock titulo %}
@@ -6,10 +10,61 @@ Crear centro deportivo
     {% if error %}
         <h2>{{ error }}</h2>
     {% else %} 
-        <form method="POST" id="centroForm" data-provincias-url="{% url 'ajax_cargar_provincias' %}" novalidate data-comunas-url="{% url 'ajax_cargar_comunas' %}" novalidate> 
+        <form method="POST"> 
         {% csrf_token %} 
-       
-            {{ form.as_p }}
+        <div class="row">
+           {#{form.as_p }#}
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="col-md-6">{{ form.Nombre.label }}</div>
+                <div class="col-md-6">{{ form.Nombre }}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">{{ form.direccion.label }}</div>
+                <div class="col-md-6">{{ form.direccion }}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">{{ form.region.label }}</div>
+                <div class="col-md-6">
+                <select class="form-control" name="region" id="id_region">
+                    <option value="0">----------</option>
+                    {% for item in region %}
+                    <option value="{{item.region_id}}">{{item.region_nombre}}</option>
+                    {% endfor %}
+                </select>  
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">{{ form.provincia.label }}</div>
+                <div class="col-md-6">
+                    <select class="form-control" name="provincia" id="id_provincia">
+                        <option value="0">----------</option>
+                        {% for item in provincia %}
+                        <option value="{{item.provincia_id}}" data-chained="{{item.region_id}}">{{item.provincia_nombre}}</option>
+                        {% endfor %}
+                    </select> 
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-6">{{ form.comuna.label }}</div>
+                <div class="col-md-6">
+                    <select class="form-control" name="comuna" id="id_comuna">
+                        <option value="0">----------</option>
+                        {% for item in comuna %}
+                        <option value="{{item.comuna_id}}" data-chained="{{item.provincia_id}}" >{{item.comuna_nombre}}</option>
+                        {% endfor %}
+                    </select>   
+
+                </div>
+            </div>
+            
+            
+
+        </div>
+            
          
         <button type="submit" class="btn btn-primary">Crear</button>               
     </form>
@@ -17,43 +72,21 @@ Crear centro deportivo
 {% endblock body %}
 
 {% block extrajs %}
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script>
-    $("#id_region").change(function () {
-      var url = $("#centroForm").attr("data-provincias-url");
-      var regionId = $(this).val();     
+<script src="{% static 'js/lib/jquery.js' %}"></script>
+<script src="{% static 'js/lib/jquery.chained.js' %}"></script>
 
-      $.ajax({
-        url: url,
-        
-        data: {
-          'region': regionId,        
+<script>
+    $(function(){
+        $("#id_region").val("{{obj.provincia.region.region_id}}").change();
+        $("#id_provincia").val("{{obj.provincia.provincia_id}}").change();
+        $("#id_comuna").val("{{obj.comuna.comuna_id}}").change();
+       
+        $("#id_provincia").chained("#id_region");
+        $("#id_comuna").chained("#id_provincia");
 
-        },
-        success: function (data) {
-          $("#id_provincia").html(data);         
+    })
+    
 
-        }
-      });
- 
-    });
-    $("#id_provincia").change(function () {
-      var url = $("#centroForm").attr("data-comunas-url");
-      var provinciaId = $(this).val();     
+</script>
 
-      $.ajax({
-        url: url,
-        
-        data: {
-          'provincia': provinciaId,        
-
-        },
-        success: function (data) {
-          $("#id_comuna").html(data);       
-
-        }
-      });
- 
-    });
-  </script>
-  {% endblock extrajs %}
+{% endblock extrajs %}

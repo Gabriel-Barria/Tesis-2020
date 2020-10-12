@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+
+{% block titulo %}
+Confirmar eliminacion
+{% endblock titulo %}
+
+{% block body %}
+
+<form method="POST">
+    {% csrf_token %}
+    <P><strong>¿Desea eliminar el registro {{ object }}</strong></P>
+    <button type="submit" class="btn btn-danger">Confirmar</button>
+    <a href="{% url 'Base:listar_cancha' %}" class="btn btn-danger">Cancelar</a> 
+</form>
+
+{% endblock body %}

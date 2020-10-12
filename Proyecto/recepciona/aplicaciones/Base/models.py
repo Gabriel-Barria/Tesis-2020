@@ -86,6 +86,15 @@ class CentroDeportivo(ModeloBase):
      region = models.ForeignKey(Regiones, on_delete = models.CASCADE)
      comuna = models.ForeignKey(Comunas, on_delete = models.CASCADE)
      provincia = models.ForeignKey(Provincias, on_delete = models.CASCADE)
+
+     class Meta:
+        verbose_name = 'Centro deportivo'
+        verbose_name_plural = 'Centros deportivos'
+
+     def __str__(self):
+        return self.Nombre 
+
+
      
 
 #A partir de aqui se definen los modelos para canchas
