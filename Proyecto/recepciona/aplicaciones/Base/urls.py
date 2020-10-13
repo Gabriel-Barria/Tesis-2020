@@ -1,11 +1,12 @@
 from django.urls import include, path
+from django.contrib.auth.decorators import login_required
 from .views import CrearServicio, ListadoServicio, ActualizarServicio, EliminarServicio, CrearCancha, ListadoCancha, ActualizarCancha, EliminarCancha, CrearSuperficie, ListadoSuperficie, ActualizarSuperficie, EliminarSuperficie, CrearHorario, ListadoHorario, ActualizarHorario, EliminarHorario, CrearCentro, ListadoCentro, ActualizarCentro, EliminarCentro, CrearTipo, ListadoTipo, ActualizarTipo, EliminarTipo
 from . import views
 urlpatterns = [
-    path('Servicio/crear_servicio/',CrearServicio.as_view(), name = 'crear_servicio'),
-    path('Servicio/listar_servicio/',ListadoServicio.as_view(), name = 'listar_servicio'),
-    path('Servicio/editar_servicio/<int:pk>',ActualizarServicio.as_view(), name = 'editar_servicio'),
-    path('Servicio/eliminar_servicio/<int:pk>',EliminarServicio.as_view(), name = 'eliminar_servicio'),
+    path('Servicio/crear_servicio/',login_required(CrearServicio.as_view()), name = 'crear_servicio'),
+    path('Servicio/listar_servicio/',login_required(ListadoServicio.as_view()), name = 'listar_servicio'),
+    path('Servicio/editar_servicio/<int:pk>',login_required(ActualizarServicio.as_view()), name = 'editar_servicio'),
+    path('Servicio/eliminar_servicio/<int:pk>',login_required(EliminarServicio.as_view()), name = 'eliminar_servicio'),
     #CRUD CANCHA 
     path('Cancha/crear_cancha/',CrearCancha.as_view(), name = 'crear_cancha'),
     path('Cancha/listar_cancha/',ListadoCancha.as_view(), name = 'listar_cancha'),

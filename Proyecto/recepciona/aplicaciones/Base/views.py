@@ -3,6 +3,7 @@ from .forms import ServicioForm, SuperficieForm, CentroForm, HorarioForm, Cancha
 from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DeleteView
 from .models import Servicio, Superficie, CentroDeportivo, Horario, cancha, Tipo_cancha, Regiones, Provincias, Comunas
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
