@@ -1,6 +1,6 @@
 from django.urls import include, path
 from django.contrib.auth.decorators import login_required
-from .views import CrearServicio, ListadoServicio, ActualizarServicio, EliminarServicio, CrearCancha, ListadoCancha, ActualizarCancha, EliminarCancha, CrearSuperficie, ListadoSuperficie, ActualizarSuperficie, EliminarSuperficie, CrearHorario, ListadoHorario, ActualizarHorario, EliminarHorario, CrearCentro, ListadoCentro, ActualizarCentro, EliminarCentro, CrearTipo, ListadoTipo, ActualizarTipo, EliminarTipo
+from .views import CrearServicio, ListadoServicio, ActualizarServicio, EliminarServicio, CrearCancha, ListadoCancha, ActualizarCancha, EliminarCancha, CrearSuperficie, ListadoSuperficie, ActualizarSuperficie, EliminarSuperficie, CrearHorario, ListadoHorario, ActualizarHorario, EliminarHorario, CrearCentro, ListadoCentro, ActualizarCentro, EliminarCentro, CrearTipo, ListadoTipo, ActualizarTipo, EliminarTipo, Descripcion_cancha
 from . import views
 urlpatterns = [
     path('Servicio/crear_servicio/',login_required(CrearServicio.as_view()), name = 'crear_servicio'),
@@ -26,14 +26,15 @@ urlpatterns = [
     path('Centro_deportivo/crear_centro/',CrearCentro.as_view(), name = 'crear_centro'),
     path('Centro_deportivo/listar_centro/',ListadoCentro.as_view(), name = 'listar_centro'),
     path('Centro_deportivo/editar_centro/<int:pk>',ActualizarCentro.as_view(), name = 'editar_centro'),
-    path('Centro_deportivo/eliminar_centro/<int:pk>',EliminarCentro.as_view(), name = 'eliminar_centro'),
-    
+    path('Centro_deportivo/eliminar_centro/<int:pk>',EliminarCentro.as_view(), name = 'eliminar_centro'),   
    
     #CRUD TIPO
     path('Tipo_Cancha/crear_tipo/',CrearTipo.as_view(), name = 'crear_tipo'),
     path('Tipo_Cancha/listar_tipo/',ListadoTipo.as_view(), name = 'listar_tipo'),
     path('Tipo_Cancha/editar_tipo/<int:pk>',ActualizarTipo.as_view(), name = 'editar_tipo'),
     path('Tipo_Cancha/eliminar_tipo/<int:pk>',EliminarTipo.as_view(), name = 'eliminar_tipo'),
+
+    path('Descripcion_cancha.html',Descripcion_cancha.as_view(), name = 'Descripcion_cancha'),
 
 ]
 

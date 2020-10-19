@@ -14,6 +14,10 @@ from django.utils.decorators import method_decorator
 
 class Inicio(TemplateView):
     template_name = 'index.html'
+class Home(TemplateView):
+    template_name = 'home.html'
+class Descripcion_cancha(TemplateView):
+    template_name = ('Descripcion_cancha.html')
 
 class ListadoServicio(ListView):
     model = Servicio

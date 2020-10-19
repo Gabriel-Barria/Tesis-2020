@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from aplicaciones.Base.views import Inicio
+from aplicaciones.Base.views import Inicio, Home
 from django.contrib.auth.decorators import login_required
 from aplicaciones.usuario.views import Login, logoutUsuario
 from aplicaciones.Base import views
@@ -23,8 +23,10 @@ from aplicaciones.Base import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('usuarios/',include(('aplicaciones.usuario.urls','usuarios'))),
     path('Base/',include(('aplicaciones.Base.urls','Base'))),
-    path('',login_required(Inicio.as_view()), name = 'index'),
+    path('Base/',login_required(Inicio.as_view()), name = 'index'),
+    path('',Home.as_view(), name = 'home'),    
     path('accounts/login/',Login.as_view(), name = 'Login'),
     path('logout/' ,login_required(logoutUsuario), name = 'logout'),
   
