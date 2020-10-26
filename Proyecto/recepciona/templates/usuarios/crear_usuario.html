@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block titulo %}
+Crear usuario
+{% endblock titulo %}
+{% block body %}
+    {% if error %}
+        <h2>{{ error }}</h2>
+    {% else %} 
+        <form method="POST"> 
+        {% csrf_token %} 
+        <div class="row">
+           {{form.as_p}}
+        </div> 
+            
+            
+
+      
+            
+         
+        <button type="submit" class="btn btn-primary">Crear</button>               
+    </form>
+    {% endif %}  
+{% endblock body %}
+
+{% block extrajs %}
+
+
+{% endblock extrajs %}

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from aplicaciones.Base.models import Regiones, Provincias, Comunas
+#from aplicaciones.Base.models import Regiones, Provincias, Comunas
 
 class UsuarioManager(BaseUserManager):
     def create_user(self,email,username,nombres,password = None):
@@ -33,9 +33,9 @@ class Usuario(AbstractBaseUser):
     apellidos = models.CharField('Apellidos', max_length = 200, blank = True, null = True)
     imagen = models.ImageField('Imagen de perfil', upload_to = 'perfil/', max_length = 200, null = True)    
     direccion = models.CharField('Direccion', max_length = 200, blank = True, null = True)
-    region = models.ForeignKey(Regiones, on_delete = models.CASCADE, null = True)
-    provincia = models.ForeignKey(Provincias, on_delete = models.CASCADE, null = True)
-    comuna = models.ForeignKey(Comunas, on_delete = models.CASCADE,  null = True)
+    region = models.ForeignKey('Base.Regiones', on_delete = models.CASCADE, null = True)
+    provincia = models.ForeignKey('Base.Provincias', on_delete = models.CASCADE, null = True)
+    comuna = models.ForeignKey('Base.Comunas', on_delete = models.CASCADE,  null = True)
     usuario_activo = models.BooleanField(default = True)
     usuario_administrador = models.BooleanField(default = False)
     objects = UsuarioManager()

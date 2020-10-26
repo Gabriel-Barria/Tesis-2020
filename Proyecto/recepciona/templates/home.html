@@ -157,19 +157,25 @@
 
         <div class="content">
             <div class="row">
+                {% for cancha in Cancha %} 
+                <div class="col-md-4">
+                    <div class="card"> 
+                                               
+                    <a href="{% url 'Base:Descripcion_cancha' cancha.id %}">              
+                             <img class="card-img-top" src="{{ cancha.imagen.url }}" alt="Imagen de cancha" height="250">
+                          <div class="card-body">
+                                <h4 class="card-title mb-3">{{ cancha.nombre }}</h4>
+                          <p class="card-text">{{ cancha.descripcion }}</p>                            
+                                <p class="card-text">{{ cancha.superficie }}</p>
 
-                    <a href="{% url 'Base:Descripcion_cancha' %}">
-            <div class="col-md-4">
-                        <div class="card">
-                            <img class="card-img-top" src="{% static 'images/tenis.jpg' %}" alt="Card image cap">
-                            <div class="card-body">
-                                <h4 class="card-title mb-3">Cancha de tenis</h4>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                             </div>
-                        </div>
-                    </div>
-                    </a>
-
+                        
+                    
+                    </a>                   
+              
+            </div>
+            </div>
+            {% endfor %}
 
 
                 </div>

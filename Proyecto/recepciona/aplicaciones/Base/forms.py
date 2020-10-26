@@ -1,5 +1,5 @@
 from django import forms
-from .models import Servicio, Superficie, cancha, Horario, CentroDeportivo, Tipo_cancha, Provincias, Regiones, Comunas
+from .models import Servicio, Superficie, Cancha, Horario, CentroDeportivo, Tipo_cancha, Provincias, Regiones, Comunas
 from django.contrib import admin
 from django.forms import *
 
@@ -31,20 +31,65 @@ class TipoForm(ModelForm):
 
 class CanchaForm(ModelForm):
     class Meta:
-        model = cancha
-        fields = ['nombre','descripcion','direccion','valor','servicios','tipo_cancha','superfice','centro_dep']
+        model = Cancha
+        fields = ['usuario_id','nombre','descripcion','valor','servicios','tipo_cancha','superficie','centro_dep']
 
 class HorarioForm(ModelForm):
     class Meta:
         model = Horario
-        fields = ['cancha','hora_inicio','hora_termino','dia']
+        fields = ['cancha','title','hora_inicio','hora_termino','dia', 'color']
+        widgets = {
+            'cancha': Select(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Nombre de cancha',
+                    'id': 'cancha',
+                }
+            ),
+            'title': HiddenInput(
+                attrs = {
+                    'id': 'title',
+                    'value': 'Cerrado',
+                }
+            ),
+            'hora_inicio': TimeInput(
+                attrs = {
+                    'class':'form-control',                    
+                    'id': 'hora_inicio',
+                    'type': 'time',
+                }
+            ),
+            'hora_termino': TimeInput(
+                attrs = {
+                    'class':'form-control',
+                    'id': 'hora_termino',
+                    'type': 'time',
+                }
+            ),
+            'dia': Select(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Dia',
+                    'id': 'dia',
+                }
+            ),
+            'color': HiddenInput(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Color',
+                    'id': 'color',
+                    'value': '1',
+                }
+            ),
+
+        }
 
 class CentroForm(ModelForm):
     class Meta:
         model = CentroDeportivo
-        fields = ['Nombre' , 'direccion', 'region', 'provincia', 'comuna']
+        fields = ['nombre' , 'direccion', 'region', 'provincia', 'comuna']
         labels = {
-            'Nombre': 'Nombre del centro',
+            'nombre': 'Nombre del centro',
             'direccion': 'Direccion',
             'region': 'Region',
             'provincia': 'Provincia',

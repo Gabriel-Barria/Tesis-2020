@@ -1,4 +1,6 @@
 from django.db import models
+#from aplicaciones.usuario.models import *
+
 
 class ModeloBase(models.Model):
     id = models.AutoField(primary_key=True)
@@ -42,60 +44,20 @@ class Comunas(models.Model):
     def __str__(self):
         return self.comuna_nombre
 
-#A partir de aqui se ingresan los modelos para usuarios
-
-class Roles(ModeloBase):
-    nombre = models.CharField('Nombre', max_length=40)
-    class Meta:
-        verbose_name = 'Role'
-        verbose_name_plural = 'Roles'
-
-    def __str__(self):
-        return self.nombre
-
-
-#crear modelo de usuario
-
-class Persona(ModeloBase):
-    nombres = models.CharField('Nombres', max_length=40)
-    apellidop = models.CharField('Apellido paterno', max_length=40)
-    apellidom = models.CharField('Apellido materno', max_length=40)
-    direccion = models.CharField('Direccion', max_length=60)
-    region = models.ForeignKey(Regiones, on_delete = models.CASCADE)
-    provincia = models.ForeignKey(Provincias, on_delete = models.CASCADE)
-    comuna = models.ForeignKey(Comunas, on_delete = models.CASCADE)
-    email = models.EmailField('e-mail')
-
-
-class Usuario(ModeloBase):     
-    contrasenia = models.CharField('Contraseña', max_length=40)
-    role = models.ForeignKey(Roles, on_delete = models.CASCADE)
-
-    class Meta:
-        verbose_name = 'Usuario'
-        verbose_name_plural = 'Usuarios'
-
-class Ubicacion(ModeloBase):
-    lat = models.CharField('Latitud', max_length=100)
-    lng = models.CharField('Longitud', max_length=100)
-
-
 class CentroDeportivo(ModeloBase):
-     Nombre = models.CharField('Nombre', max_length = 40)
+     usuario_id = models.ForeignKey('usuario.Usuario', on_delete = models.CASCADE )
+     nombre = models.CharField('Nombre', max_length = 40)
      direccion = models.CharField('Direccion', max_length = 100)
-     region = models.ForeignKey(Regiones, on_delete = models.CASCADE)
-     comuna = models.ForeignKey(Comunas, on_delete = models.CASCADE)
+     region = models.ForeignKey(Regiones, on_delete = models.CASCADE)     
      provincia = models.ForeignKey(Provincias, on_delete = models.CASCADE)
+     comuna = models.ForeignKey(Comunas, on_delete = models.CASCADE)
 
      class Meta:
         verbose_name = 'Centro deportivo'
         verbose_name_plural = 'Centros deportivos'
 
      def __str__(self):
-        return self.Nombre 
-
-
-     
+        return self.nombre      
 
 #A partir de aqui se definen los modelos para canchas
 class Superficie(ModeloBase):
@@ -127,14 +89,18 @@ class Servicio(ModeloBase):
     def __str__(self):
         return self.nombre
 
-class cancha(ModeloBase):
+
+
+
+class Cancha(ModeloBase):
+    usuario_id = models.ForeignKey('usuario.Usuario', on_delete = models.CASCADE)
     nombre = models.CharField('Nombre', max_length=40)
     descripcion = models.CharField('Descripcion', max_length=40)
-    direccion = models.CharField('Direccion', max_length=40)
     valor = models.CharField('Valor hora', max_length=40)
     servicios = models.ManyToManyField(Servicio)
+    imagen = models.ImageField('Imagen principal', upload_to = 'cancha_img/', max_length = 255, null = True)
     tipo_cancha = models.ForeignKey(Tipo_cancha, on_delete = models.CASCADE)
-    superfice = models.ForeignKey(Superficie, on_delete = models.CASCADE)
+    superficie = models.ForeignKey(Superficie, on_delete = models.CASCADE)
     centro_dep = models.ForeignKey(CentroDeportivo, on_delete = models.CASCADE)
 
     class Meta:
@@ -143,24 +109,59 @@ class cancha(ModeloBase):
     def __str__(self):
         return self.nombre
 
-class Horario(ModeloBase):
-    cancha = models.ForeignKey(cancha, on_delete=models.CASCADE)
-    hora_inicio = models.TimeField('hora inicio')
-    hora_termino = models.TimeField('hora termino')
-    dia = models.CharField('Dia de semana', max_length=15)
+    
 
+
+class Imagenes(ModeloBase):
+    cancha_id = models.ForeignKey(Cancha, on_delete = models.CASCADE, related_name = 'imagen_cancha')
+    imagen_cancha = models.ImageField('Imagen de cancha', upload_to = 'cancha/', max_length = 255, null = True)
+
+    class Meta:
+        verbose_name = 'Imagen'
+        verbose_name_plural = 'Imagenes'
+ 
+
+
+class Color(ModeloBase):
+    codigo = models.CharField('Codigo del color', max_length = 50)
+    color_name = models.CharField('Nombre de color', max_length = 50)
+
+    class Meta:
+        verbose_name = 'Color'
+        verbose_name_plural = 'Colores'
+    def __str__(self):
+        return self.color_name
+class Dias(ModeloBase):
+    day_number = models.IntegerField()
+    day_name = models.CharField('Nombre del dia', max_length = 50)
+    
+    class Meta:
+        verbose_name = 'Dia'
+        verbose_name_plural = 'Dias'
+    def __str__(self):
+        return self.day_name
+class Horario(ModeloBase):
+    cancha = models.ForeignKey(Cancha, on_delete=models.CASCADE)
+    title = models.CharField('title', max_length = 50)
+    hora_inicio = models.CharField('hora inicio', max_length=8, null=True)
+    hora_termino = models.CharField('hora termino', max_length=8, null=True)
+    dia = models.ForeignKey(Dias, on_delete = models.CASCADE)
+    color = models.ForeignKey(Color, on_delete = models.CASCADE)
+    
     class Meta:
         verbose_name = 'Horario'
         verbose_name_plural = 'Horarios'
+    
 
 #Aqui iran los datos relacionados con las reservas
 
-class reserva(ModeloBase):
-    Usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    Cancha_r = models.ForeignKey(cancha, on_delete=models.CASCADE)
-    hora_inicio = models.TimeField('Desde')
-    hora_fin = models.TimeField('Hasta')
-    fecha_reserva = models.DateField('Fecha de reserva')
+class Reserva(ModeloBase):
+    usuario = models.ForeignKey('usuario.Usuario', on_delete=models.CASCADE)
+    cancha = models.ForeignKey(Cancha, on_delete=models.CASCADE)
+    date_start = models.CharField('date_start',max_length=19)
+    date_end = models.CharField('date_end', max_length=19)
+    color = models.ForeignKey(Color, on_delete = models.CASCADE)
+
 
     class Meta:
         verbose_name = 'Reserva'

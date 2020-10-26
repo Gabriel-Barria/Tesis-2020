@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django_static_arrive',
     'django_cascading_dropdown_widget',  
     'widget_tweaks',
-    'aplicaciones.usuario',   
+    'aplicaciones.usuario',
+    
     ]
 
 MIDDLEWARE = [
@@ -91,6 +92,7 @@ DATABASES = {
         'PORT': 3306,
     }
 }
+
 
 
 # Password validation

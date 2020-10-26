@@ -34,7 +34,7 @@ urlpatterns = [
     path('Tipo_Cancha/editar_tipo/<int:pk>',ActualizarTipo.as_view(), name = 'editar_tipo'),
     path('Tipo_Cancha/eliminar_tipo/<int:pk>',EliminarTipo.as_view(), name = 'eliminar_tipo'),
 
-    path('Descripcion_cancha.html',Descripcion_cancha.as_view(), name = 'Descripcion_cancha'),
+    path('Descripcion_cancha/<int:pk>',Descripcion_cancha.as_view(), name = 'Descripcion_cancha'),
 
 ]
 
