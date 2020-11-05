@@ -95,7 +95,7 @@ class Servicio(ModeloBase):
 class Cancha(ModeloBase):
     usuario_id = models.ForeignKey('usuario.Usuario', on_delete = models.CASCADE)
     nombre = models.CharField('Nombre', max_length=40)
-    descripcion = models.CharField('Descripcion', max_length=40)
+    descripcion = models.CharField('Descripcion', max_length=150)
     valor = models.CharField('Valor hora', max_length=40)
     servicios = models.ManyToManyField(Servicio)
     imagen = models.ImageField('Imagen principal', upload_to = 'cancha_img/', max_length = 255, null = True)
@@ -158,8 +158,8 @@ class Horario(ModeloBase):
 class Reserva(ModeloBase):
     usuario = models.ForeignKey('usuario.Usuario', on_delete=models.CASCADE)
     cancha = models.ForeignKey(Cancha, on_delete=models.CASCADE)
-    date_start = models.CharField('date_start',max_length=19)
-    date_end = models.CharField('date_end', max_length=19)
+    date_start = models.CharField('date_start',max_length=20)
+    date_end = models.CharField('date_end', max_length=20)
     color = models.ForeignKey(Color, on_delete = models.CASCADE)
 
 

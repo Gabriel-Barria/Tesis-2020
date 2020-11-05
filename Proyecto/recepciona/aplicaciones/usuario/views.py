@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
@@ -14,7 +14,7 @@ from .forms import FormularioLogin, FormularioUsuario
 class Login(FormView):
     template_name = 'login.html'
     form_class = FormularioLogin
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('home')
 
     @method_decorator(csrf_protect)
     @method_decorator(never_cache)
@@ -43,4 +43,5 @@ class RegistrarUsuario(CreateView):
     model = Usuario
     form_class = FormularioUsuario
     template_name = 'usuarios/crear_usuario.html'
-    succes_url = reverse_lazy('usuarios:listar_usuarios')
+    success_url = reverse_lazy('Login')
+    

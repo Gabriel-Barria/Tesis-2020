@@ -1,17 +1,19 @@
 {% extends 'index.html' %}
 
+
+
+
 {% block titulo %}
-Listado Cancha
+Listado de Canchas
 {% endblock titulo %}
 
 {% block body %}
 
-    {% if object_list %}
-
-<a href="{% url 'Base:crear_cancha' %}" class="btn btn-primary">Agregar Cancha</a>
+    {% if canchas %}
+<button onclick="abrir_modal_creacion('{% url 'Base:crear_cancha' %}')" class="btn btn-primary" type="button">Agregar</button>
 <div class="card">
   <div class="card-header">         
-        <strong class="card-title">Listado de cancha</strong>
+        <strong class="card-title">Listado de canchas</strong>
       </div>      
     
   <div class="table-stats order-table ov-h">
@@ -21,40 +23,44 @@ Listado Cancha
           <th>#</th>
           <th>Nombre</th> 
           <th>Descripcion</th> 
-          <th>Direccion</th> 
           <th>Valor</th> 
-          <th>Servicios</th> 
           <th>tipo_cancha</th> 
-          <th>superfice</th> 
+          <th>superficie</th> 
           <th>centro_dep</th> 
-          <th>Opciones</th>        
+          <th>Opciones</th>         
         </tr>
       </thead>
       <tbody>
           
-            {% for cancha in object_list %}
+            {% for c in canchas %}
             <tr>
-            <td>{{ cancha.id}}</td>
-            <td>{{ cancha.nombre }}</td>
-            <td>{{ cancha.descripcion }}</td>
-            <td>{{ cancha.direccion}}</td>
-            <td>{{ cancha.valor }}</td>
-            <td>{{ cancha.servicio }}</td>
-            <td>{{ cancha.tipo_cancha}}</td>
-            <td>{{ cancha.superfice}}</td>
-            <td>{{ cancha.centro_dep}}</td>          
-            <td><a href="{%url 'Base:editar_cancha' cancha.id%}" class="btn btn-primary">Editar</a><a href="{%url 'Base:eliminar_cancha' cancha.id%}" class="btn btn-danger">Eliminar</a></td>
-            </tr>
+            <td>{{ c.id}}</td>
+            <td>{{ c.nombre }}</td>
+            <td>{{ c.descripcion}}</td>
+            <td>{{ c.valor}}</td>
+            <td>{{ c.tipo_cancha.nombre}}</td>
+            <td>{{ c.superficie.nombre}}</td>
+            <td>{{ c.centro_dep.nombre}}</td>
+            <td><button onclick="abrir_modal_edicion('{% url 'Base:editar_cancha' c.id %}')" class="btn btn-primary">Editar</button> 
+            <a href="{% url 'Base:eliminar_cancha' c.id %}" class="btn btn-danger">Eliminar</a></td>
+          </tr>
             {% endfor %}
         
       </tbody>
     </table>    
   </div>
+</div>
   
     {% else %}
-    <h1>No existen Canchas</h1>
-    <a href="{% url 'Base:crear_cancha' %}" class="btn btn-primary">Agregar cancha</a>
+    <h1>No existen canchas</h1><br>
+    <button onclick="abrir_modal_creacion('{% url 'Base:crear_cancha' %}')" class="btn btn-primary" type="button">Agregar centro</button>
     {% endif %}   
+
+<div class="modal fade" id="edicion" role="dialog">
+ </div>
+ <div class="modal fade" id="creacion" role="dialog">
 </div>
+
+
 {% endblock body %}
 

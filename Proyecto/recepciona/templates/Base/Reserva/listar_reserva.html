@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+
+{% block titulo %}
+Listado de reservas
+{% endblock titulo %}
+
+{% block body %}
+
+    {% if object_list %}
+<a href="{% url 'Base:crear_reserva' %}" class="btn btn-primary">Agregar</a>
+<div class="card">
+  <div class="card-header">         
+        <strong class="card-title">Listado de reservas</strong>
+      </div>      
+    
+  <div class="table-stats order-table ov-h">
+    <table id="tabla_libros" class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Usuario</th>   
+          <th>Cancha</th>  
+          <th>Fecha reserva</th>
+          <th>Acciones</th>
+                         
+        </tr>
+      </thead>
+      <tbody>
+          
+            {% for r in object_list %}
+            <tr>
+            <td>{{ r.id}}</td>
+            <td>{{ r.usuario }}</td>
+            <td>{{ r.cancha }}</td>
+            <td>{{ r.date_start }} a {{ r.date_end }}</td>         
+
+            <td><a href="{% url 'Base:editar_reserva' r.id %}" class="btn btn-primary">Editar</a> <a href="{% url 'Base:eliminar_reserva' r.id %}" class="btn btn-danger">Eliminar</a></td>
+          </tr>
+            {% endfor %}
+        
+      </tbody>
+    </table>    
+  </div>
+  
+    {% else %}
+    <h1>No existen reservas</h1>
+    <a href="{% url 'Base:crear_reserva' %}" class="btn btn-primary">Agregar</a>
+    {% endif %}   
+</div>
+{% endblock body %}
+

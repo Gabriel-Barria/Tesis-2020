@@ -1,32 +1,49 @@
-{% extends 'index.html' %}
-{% load staticfiles %}
-{% block extra_css %}
-{% endblock extra_css %}
+{% extends 'login.html' %}
+                    {% block body %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div id="errores">
+                            
+                        </div>
+                       
 
-{% block titulo %}
-Crear usuario
-{% endblock titulo %}
-{% block body %}
-    {% if error %}
-        <h2>{{ error }}</h2>
-    {% else %} 
-        <form method="POST"> 
-        {% csrf_token %} 
-        <div class="row">
-           {{form.as_p}}
-        </div> 
-            
-            
+                        <div class="form-group">
+                            {{ form.username.label }}
+                            {{ form.username }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.email.label }}
+                            {{ form.email }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.nombres.label }}
+                            {{ form.nombres }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.apellidos.label }}
+                            {{ form.apellidos }}
+                        </div>
+                        
+                        <div class="form-group">
+                            {{ form.password1.label }}
+                            {{ form.password1 }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.password2.label }}
+                            {{ form.password2 }}
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                {{ form.usuario_administrador }} {{ form.usuario_administrador.label }}
+                            </label>
+                        </div><br>
+                        
+                        <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Registrar</button>
+                      
+                        <div class="register-link m-t-15 text-center">
+                            <p>¿Ya tienes una cuenta? <a href="{% url 'Login' %}"> Inicia sesion aquí</a></p>
+                        </div>
+                    </form>
+                    {% endblock body %}
+       
 
-      
-            
-         
-        <button type="submit" class="btn btn-primary">Crear</button>               
-    </form>
-    {% endif %}  
-{% endblock body %}
-
-{% block extrajs %}
-
-
-{% endblock extrajs %}

@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% block titulo %}
+Crear servicio
+{% endblock titulo %}
+{% block body %}
+    {% if error %}
+        <h2>{{ error }}</h2>
+    {% else %} 
+        <form method="POST">
+        {% csrf_token %}  
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Crear</button>               
+    </form>
+    {% endif %} 
+{% endblock body %}

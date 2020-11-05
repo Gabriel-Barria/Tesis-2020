@@ -2,19 +2,18 @@
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h2 class="modal-title">Creacion de cancha</h2>
+            <h2 class="modal-title">Edicion de cancha {{ object }}</h2>
             <button class="close" type="button" data-dismiss = "modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form action="{% url 'Base:crear_cancha' %}" method="POST" enctype="multipart/form-data">
+        <form method="POST" action="{% url 'Base:editar_cancha' object.id%}"">
         <div class="modal-body">
             
-            {% csrf_token %}  
+            {% csrf_token %}
             {{ form.as_p }}
     
         </div>
-               
         <div class="modal-footer" >
             <button class="btn btn-danger" type="button" onclick="cerrar_modal_creacion();">Cancelar</button>
             <button class="btn btn-primary" type="submit">Confirmar</button>
@@ -23,17 +22,4 @@
     </form>
     </div>
 </div>
-<script>
-$(function(){
-    $('#id_usuario_id').val({{ request.user.id }});
-
-
-
-
-
-})
-
-</script>
-
-
 

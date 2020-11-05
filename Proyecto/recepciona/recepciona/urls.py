@@ -18,7 +18,7 @@ from django.conf import settings
 from django.views.static import serve
 
 from django.urls import path, include, re_path
-from aplicaciones.Base.views import Inicio, Home
+from aplicaciones.Base.views import Inicio, home, MisReservas, Descripcion_cancha
 from django.contrib.auth.decorators import login_required
 from aplicaciones.usuario.views import Login, logoutUsuario
 from aplicaciones.Base import views
@@ -29,9 +29,11 @@ urlpatterns = [
     path('usuarios/',include(('aplicaciones.usuario.urls','usuarios'))),
     path('Base/',include(('aplicaciones.Base.urls','Base'))),
     path('Base/',login_required(Inicio.as_view()), name = 'index'),
-    path('',Home.as_view(), name = 'home'),    
+    path('',login_required(home), name = 'home'),    
     path('accounts/login/',Login.as_view(), name = 'Login'),
     path('logout/' ,login_required(logoutUsuario), name = 'logout'),
+    path('mis_reservas/<int:pk>',MisReservas.as_view(), name = 'mis_reservas'),
+    path('Descripcion_cancha/<int:pk>',Descripcion_cancha.as_view(), name = 'Descripcion_cancha'),
   
 ]
 urlpatterns += [

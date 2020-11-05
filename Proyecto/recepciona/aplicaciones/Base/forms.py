@@ -1,5 +1,5 @@
 from django import forms
-from .models import Servicio, Superficie, Cancha, Horario, CentroDeportivo, Tipo_cancha, Provincias, Regiones, Comunas
+from .models import Servicio, Superficie, Cancha, Horario, CentroDeportivo, Tipo_cancha, Provincias, Regiones, Comunas, Reserva
 from django.contrib import admin
 from django.forms import *
 
@@ -33,7 +33,71 @@ class CanchaForm(ModelForm):
     class Meta:
         model = Cancha
         fields = ['usuario_id','nombre','descripcion','valor','servicios','tipo_cancha','superficie','centro_dep']
+        labels = {
+            'nombre': 'Nombre de cancha',
+            'descripcion': 'Descripcion',
+            'valor':'Valor hora',
+            'servicios': 'Servicios',
+            'tipo_cancha':'Tipo de cancha',
+            'superficie': 'Superficie',
+            'centro_dep': 'Centro deportivo',
 
+        }
+        widgets = {
+            'usuario_id':HiddenInput(attrs={
+
+            }
+        ),
+        'nombre':TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese nombre de cancha',
+            }
+        ),
+        'descripcion': Textarea(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Descripcion',
+                    
+                    
+                }
+            ),
+        'valor': NumberInput(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Ingrese valor hora',
+                    
+                }
+            ),
+        'servicios': SelectMultiple(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Ingrese servicios',
+                    
+                }
+            ),
+        
+        'tipo_cancha': Select(
+                attrs = {
+                    'class':'form-control',
+                    
+                    
+                }
+            ),
+        'superficie': Select(
+                attrs = {
+                    'class':'form-control',
+                    
+                    
+                }
+            ),
+        'centro_dep': Select(
+                attrs = {
+                    'class':'form-control',
+                    
+                    
+                }
+            ),
+        }
 class HorarioForm(ModelForm):
     class Meta:
         model = Horario
@@ -87,14 +151,106 @@ class HorarioForm(ModelForm):
 class CentroForm(ModelForm):
     class Meta:
         model = CentroDeportivo
-        fields = ['nombre' , 'direccion', 'region', 'provincia', 'comuna']
+        fields = ['usuario_id','nombre' , 'direccion', 'region', 'provincia', 'comuna']
         labels = {
+            'usuario_id': 'Nombre de usuario',
             'nombre': 'Nombre del centro',
             'direccion': 'Direccion',
             'region': 'Region',
             'provincia': 'Provincia',
             'comuna': 'Comuna',
             }
+        widgets = {
+            'usuario_id': HiddenInput(
+                attrs = {
+                    
+                }
+            ),
+
+            'nombre': TextInput(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Nombre de centro',
+                    'id': 'nombre',
+                }
+            ),
+            'direccion': TextInput(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Direccion',
+                    'id': 'direccion',
+                }
+            ),
+            'region': Select(
+                attrs = {
+                    'class':'form-control',
+                    'id': 'id_region',
+                }
+            ),
+            'provincia': Select(
+                attrs = {
+                    'class':'form-control',
+                    'id': 'id_provincia',
+                }
+            ),
+            'comuna': Select(
+                attrs = {
+                    'class':'form-control',
+                    'id': 'id_comuna',
+                }
+            ),
+        }
+class ReservaForm(ModelForm):
+    class Meta:
+        model = Reserva
+        fields = ['usuario', 'cancha', 'date_start', 'date_end', 'color']
+
+class ReservaFormCliente(ModelForm):
+    class Meta:
+        model = Reserva
+        fields = ['usuario', 'cancha', 'date_start', 'date_end', 'color']
+        labels = {
+            
+            'date_start': 'Desde',
+            'date_end': 'Hasta',
+            }
+
+        widgets = {
+            'usuario': HiddenInput(
+                attrs = {
+                 
+                }
+            ),
+            'cancha': HiddenInput(
+                attrs = {
+                    
+                }
+            ),
+            'date_start':TextInput(
+                attrs = {
+                    'readonly': 'true'
+                    
+                    
+                }
+            ),
+            'date_end': TextInput(
+                attrs = {                    
+                   'readonly': 'true' 
+                }
+            ),
+            
+            'color': HiddenInput(
+                attrs = {
+                   
+                }
+            ),
+            
+
+        }
+        
+          
+        
+       
         
 
     
