@@ -1,49 +1,31 @@
-{% extends 'login.html' %}
-                    {% block body %}
-                    <form method="POST">
-                        {% csrf_token %}
-                        <div id="errores">
-                            
-                        </div>
-                       
 
-                        <div class="form-group">
-                            {{ form.username.label }}
-                            {{ form.username }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.email.label }}
-                            {{ form.email }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.nombres.label }}
-                            {{ form.nombres }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.apellidos.label }}
-                            {{ form.apellidos }}
-                        </div>
-                        
-                        <div class="form-group">
-                            {{ form.password1.label }}
-                            {{ form.password1 }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.password2.label }}
-                            {{ form.password2 }}
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                {{ form.usuario_administrador }} {{ form.usuario_administrador.label }}
-                            </label>
-                        </div><br>
-                        
-                        <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Registrar</button>
-                      
-                        <div class="register-link m-t-15 text-center">
-                            <p>¿Ya tienes una cuenta? <a href="{% url 'Login' %}"> Inicia sesion aquí</a></p>
-                        </div>
-                    </form>
-                    {% endblock body %}
-       
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Creacion de usuario</h2>
+            <button class="close" type="button" data-dismiss = "modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form id="form_creacion" action="{% url 'usuarios:crear_usuario' %}" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+            <div id="errores">
+
+            </div>
+            {% csrf_token %}  
+            {{ form.as_p }}
+    
+        </div>
+               
+        <div class="modal-footer" >
+            <button class="btn btn-danger" type="button" onclick="cerrar_modal_creacion();">Cancelar</button>
+            <button id="boton_creacion" onclick="registrar();" class="btn btn-primary" type="submit">Confirmar</button>
+        
+        </div>
+    </form>
+    </div>
+</div>
+
+
+
 

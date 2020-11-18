@@ -1,52 +1,52 @@
 {% extends 'index.html' %}
-
+{% load staticfiles %}
 {% block titulo %}
-Listado Servicio
+RecepcionaSport | Listado de horarios
 {% endblock titulo %}
-
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/lib/datatable/dataTables.bootstrap.min.css' %}">
+{% endblock extra_css %}
 {% block body %}
-
-    {% if object_list %}
-<a href="{% url 'Base:crear_horario' %}" class="btn btn-primary">Agregar horario</a>
 <div class="card">
-  <div class="card-header">         
-        <strong class="card-title">Listado de horarios</strong>
-      </div>      
-    
-  <div class="table-stats order-table ov-h">
-    <table id="tabla_libros" class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Cancha</th>   
-          <th>Hora inicio</th> 
-          <th>Hora termino</th> 
-          <th>Dia</th> 
-          <th>Acciones</th>         
-        </tr>
-      </thead>
-      <tbody>
-          
-            {% for horario in object_list %}
-            <tr>
-            <td>{{ horario.id}}</td>
-            <td>{{ horario.cancha }}</td>
-            <td>{{ horario.hora_inicio }}</td>
-            <td>{{ horario.hora_termino }}</td>
-            <td>{{ horario.dia }}</td>
-            <td><a href="{% url 'Base:editar_horario' horario.id %}" class="btn btn-primary">Editar</a> <a href="{% url 'Base:eliminar_horario' horario.id %}" class="btn btn-danger">Eliminar</a></td>
-          </tr>
-            {% endfor %}
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-8">
+                <strong class="card-title">Listado de Horario</strong>
+            </div>
+            <div class="col-md-4">
+                <button onclick="abrir_modal_creacion('{% url 'Base:crear_horario' %}')" class="btn btn-primary" type="button"><i class="fa fa-plus"></i>&nbsp; Agregar</button>
+            </div>
+        </div>
         
-      </tbody>
-    </table>    
-  </div>
-  
-    {% else %}
-    
-    <h1>No existen horarios</h1>
-    <a href="{% url 'Base:crear_horario' %}" class="btn btn-primary">Agregar horario</a>
-    {% endif %}   
+    </div>
+    <div class="table-stats order-table ov-h">
+        <table id="tabla_horarios" class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Hora inicio</th>
+                    <th>Hora termino</th>
+                    <th>Dia</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>               
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="creacion" role="dialog">
+
+</div>
+<div class="modal fade" id="edicion" role="dialog">
+
+</div>
+<div class="modal fade" id="eliminacion" role="dialog">
+
 </div>
 {% endblock body %}
-
+{% block extrajs %}
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'js/lib/data-table/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/Base/index_horario.js' %}"></script>
+{% endblock extrajs %}

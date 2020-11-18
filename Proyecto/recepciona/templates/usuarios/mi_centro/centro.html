@@ -7,7 +7,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form action="{% url 'Base:editar_centro' object.id%}" method="POST">
+        <form action="{% url 'usuario:editar_centro' object.id%}" method="POST">
         <div class="modal-body">
             
             {% csrf_token %}

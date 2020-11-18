@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'django_cascading_dropdown_widget',  
     'widget_tweaks',
     'aplicaciones.usuario',
+    'aplicaciones.direccion',
+    
+    
     
     ]
 
@@ -117,7 +120,7 @@ AUTH_USER_MODEL = 'usuario.Usuario'
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-PE'
 
 TIME_ZONE = 'UTC'
 

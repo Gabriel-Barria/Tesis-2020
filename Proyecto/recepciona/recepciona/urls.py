@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf import settings
+from django.conf.urls.static import static
 from django.views.static import serve
 
 from django.urls import path, include, re_path
@@ -34,8 +35,14 @@ urlpatterns = [
     path('logout/' ,login_required(logoutUsuario), name = 'logout'),
     path('mis_reservas/<int:pk>',MisReservas.as_view(), name = 'mis_reservas'),
     path('Descripcion_cancha/<int:pk>',Descripcion_cancha.as_view(), name = 'Descripcion_cancha'),
+    
   
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
 urlpatterns += [
     re_path(r'^media/(?P<path>.*)$', serve,{
         'document_root': settings.MEDIA_ROOT,

@@ -27,6 +27,13 @@
 {% block body %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/lib/main.css' %}">
+<script src="{% static 'js/lib/es.js' %}"></script>
+<script src="{% static 'js/lib/main.js' %}"></script>        
+<link href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css' rel='stylesheet'>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <style>
     #custom-nav-home-tab, #custom-nav-profile-tab, #custom-nav-contact-tab  {
         width: 33%;
@@ -52,7 +59,7 @@
                     <div class="tab-pane fade show active" id="custom-nav-home" role="tabpanel" aria-labelledby="custom-nav-home-tab">
                         <div class="row">
                             {% for d in tipo_cancha %} 
-                            <form method="GET" id="buscar_tipo">
+                            <form method="GET">
                                 <div class="col-md-4">
                                     <div class="card"> 
                                         <a href=""> 
@@ -66,7 +73,7 @@
                                                     
                                             </div>
                                             <div class="footer">
-                                                <button class="btn btn-primary" type="submit"  onclick="abrir_tabs();">Seleccionar</button>
+                                                <button class="btn btn-primary">Seleccionar</button>
                                             </div>
                                         </a>                   
                                     </div>
@@ -77,7 +84,10 @@
                     </div>
                     <div class="tab-pane fade" id="custom-nav-profile" role="tabpanel" aria-labelledby="custom-nav-profile-tab">
                         <div class="row">
+                            
                             {% for cancha in Canchas %} 
+                            <form method="GET">
+                                <input type="hidden"  name="buscar_reserva" value="{{ cancha.pk }}">
                                 <div class="col-md-4">
                                     <div class="card"> 
                                         <a href="{% url 'Descripcion_cancha' cancha.id %}"> 
@@ -91,24 +101,35 @@
                                               <p class="card-text">{{ cancha.descripcion }}</p>                            
                                                     <p class="card-text">{{ cancha.superficie }}</p>
                                             </div>
-                                        </a>                   
+                                        </a> 
+                                        <button class="btn btn-primary" type="submit">Seleccionar</button>                  
                                     </div>
+                                    
                                 </div>
+                                
+                            </form>
                             {% endfor %}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="custom-nav-contact" role="tabpanel" aria-labelledby="custom-nav-contact-tab">
-                        <div>
-                            <input type="checkbox">
-                    
-                        </div>
-                    </div>
+                       
+                           
+                      
+                        <div class="col-md-12 col-lg-7">
+                            <div class="center">
+                            <h2>Reservar</h2>
+                            </div>
+                            <div id='calendar'></div>                         
+                          </div>  
+                        
+                   </div>
                 </div>
             </div>
 
           
-     
-   
+                              
+                 
+          
 
     
 {% endblock body %}
@@ -116,19 +137,63 @@
 {% block extrajs %}
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+             
+             var calendarEl = document.getElementById('calendar');
+             var calendar = new FullCalendar.Calendar(calendarEl, {
+                 
+                 slotDuration: '01:00',    
+                 slotLabelFormat:{
+                 hour: 'numeric',
+                 minute: '2-digit',
+                 omitZeroMinute: false,
+                 meridiem: 'false',
+                                 },
 
-$(document).ready(function(){
-    $("#tipo_cancha").submit(function(e){
-        e.preventDefault();
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data
-        })
-    })
-})
-
+                                        
+                 initialView: 'timeGridThreeDay',
+                 themeSystem: 'bootstrap',
+                 timeZone: 'UTC',
+                 events:[
+                     {% for i in horario %}
+                     
+                         {
+                             id: '{{ i.pk }}',
+                             title: '{{ i.title }}',
+                             startTime: '{{ i.hora_inicio }}',
+                             endTime: '{{ i.hora_termino }}',
+                             daysOfWeek: [ {{ i.dia.day_number }} ],
+                             color: '{{ i.color.codigo }}',
+                         },
+                     {% endfor %}
+                     {% for e in reserva %}
+                     
+                         {
+                             id: 'e.pk',
+                             title: 'Reservado',
+                             start: '{{ e.date_start }}',
+                             end: '{{ e.date_end }}',
+                             color: '{{ e.color.codigo }}',
+                         },
+                     {% endfor %}                               
+                     ],
+                     
+                 
+               
+               views: {
+                 timeGridThreeDay: {
+                 type: 'timeGrid',
+                 duration: { days: 3 },
+                 
+                 }
+               }
+           
+             });
+             
+             calendar.setOption('locale','Es')
+             calendar.render();
+             
+           });
 </script>
 
 {% endblock extrajs %}

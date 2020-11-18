@@ -9,56 +9,6 @@ class ModeloBase(models.Model):
     class Meta:
         abstract = True
 
-#Aqui estaran todos los modulos relacionados con las direcciones
-class Regiones(models.Model):
-    region_id = models.AutoField(primary_key=True)
-    region_nombre = models.CharField('Nombre region', max_length = 100)
-    region_ordinal = models.CharField('Region ordinal', max_length = 4)
-
-    class Meta:
-        verbose_name = 'Region'
-        verbose_name_plural = 'Regiones'
-    def __str__(self):
-        return self.region_nombre
-
-class Provincias(models.Model):
-    provincia_id = models.AutoField(primary_key=True)
-    provincia_nombre = models.CharField('Nombre provincia', max_length = 100)
-    region = models.ForeignKey(Regiones, on_delete = models.CASCADE)
-
-
-    class Meta:
-        verbose_name = 'Provincia'
-        verbose_name_plural = 'Provincias'
-    def __str__(self):
-        return self.provincia_nombre
-
-class Comunas(models.Model):
-    comuna_id = models.AutoField(primary_key=True)
-    comuna_nombre = models.CharField('Nombre comuna', max_length = 100)
-    provincia = models.ForeignKey(Provincias, on_delete = models.CASCADE)
-
-    class Meta:
-        verbose_name = 'Comuna'
-        verbose_name_plural = 'Comunas'
-    def __str__(self):
-        return self.comuna_nombre
-
-class CentroDeportivo(ModeloBase):
-     usuario_id = models.ForeignKey('usuario.Usuario', on_delete = models.CASCADE )
-     nombre = models.CharField('Nombre', max_length = 40)
-     direccion = models.CharField('Direccion', max_length = 100)
-     region = models.ForeignKey(Regiones, on_delete = models.CASCADE)     
-     provincia = models.ForeignKey(Provincias, on_delete = models.CASCADE)
-     comuna = models.ForeignKey(Comunas, on_delete = models.CASCADE)
-
-     class Meta:
-        verbose_name = 'Centro deportivo'
-        verbose_name_plural = 'Centros deportivos'
-
-     def __str__(self):
-        return self.nombre      
-
 #A partir de aqui se definen los modelos para canchas
 class Superficie(ModeloBase):
     nombre = models.CharField('Nombre', max_length=40, unique = True)
@@ -71,7 +21,8 @@ class Superficie(ModeloBase):
         return self.nombre
 
 class Tipo_cancha(ModeloBase):    
-    nombre = models.CharField('Nombre', max_length=40)
+    nombre = models.CharField('Nombre', max_length=40, unique = True)
+    imagen = models.ImageField('Deporte', upload_to = 'deporte_img/', max_length = 255, null = True, blank = True)
 
     class Meta:
         verbose_name = 'Tipo de cancha'
@@ -82,7 +33,7 @@ class Tipo_cancha(ModeloBase):
 
 
 class Servicio(ModeloBase):    
-    nombre = models.CharField('Nombre', max_length=40) 
+    nombre = models.CharField('Nombre', max_length=40, unique = True) 
     class Meta:
         verbose_name = 'Servicio'
         verbose_name_plural = 'Servicios'
@@ -93,15 +44,15 @@ class Servicio(ModeloBase):
 
 
 class Cancha(ModeloBase):
-    usuario_id = models.ForeignKey('usuario.Usuario', on_delete = models.CASCADE)
+    usuario = models.ForeignKey('usuario.Usuario', on_delete = models.CASCADE)
     nombre = models.CharField('Nombre', max_length=40)
     descripcion = models.CharField('Descripcion', max_length=150)
     valor = models.CharField('Valor hora', max_length=40)
     servicios = models.ManyToManyField(Servicio)
-    imagen = models.ImageField('Imagen principal', upload_to = 'cancha_img/', max_length = 255, null = True)
+    imagen = models.ImageField('Imagen principal', upload_to = 'cancha_img/', max_length = 255, null = True, blank = True)
     tipo_cancha = models.ForeignKey(Tipo_cancha, on_delete = models.CASCADE)
     superficie = models.ForeignKey(Superficie, on_delete = models.CASCADE)
-    centro_dep = models.ForeignKey(CentroDeportivo, on_delete = models.CASCADE)
+    
 
     class Meta:
         verbose_name = 'Cancha'
@@ -109,18 +60,15 @@ class Cancha(ModeloBase):
     def __str__(self):
         return self.nombre
 
+class Dias(ModeloBase):
+    day_number = models.IntegerField()
+    day_name = models.CharField('Nombre del dia', max_length = 50)
     
-
-
-class Imagenes(ModeloBase):
-    cancha_id = models.ForeignKey(Cancha, on_delete = models.CASCADE, related_name = 'imagen_cancha')
-    imagen_cancha = models.ImageField('Imagen de cancha', upload_to = 'cancha/', max_length = 255, null = True)
-
     class Meta:
-        verbose_name = 'Imagen'
-        verbose_name_plural = 'Imagenes'
- 
-
+        verbose_name = 'Dia'
+        verbose_name_plural = 'Dias'
+    def __str__(self):
+        return self.day_name
 
 class Color(ModeloBase):
     codigo = models.CharField('Codigo del color', max_length = 50)
@@ -131,17 +79,9 @@ class Color(ModeloBase):
         verbose_name_plural = 'Colores'
     def __str__(self):
         return self.color_name
-class Dias(ModeloBase):
-    day_number = models.IntegerField()
-    day_name = models.CharField('Nombre del dia', max_length = 50)
-    
-    class Meta:
-        verbose_name = 'Dia'
-        verbose_name_plural = 'Dias'
-    def __str__(self):
-        return self.day_name
+
 class Horario(ModeloBase):
-    cancha = models.ForeignKey(Cancha, on_delete=models.CASCADE)
+   
     title = models.CharField('title', max_length = 50)
     hora_inicio = models.CharField('hora inicio', max_length=8, null=True)
     hora_termino = models.CharField('hora termino', max_length=8, null=True)
@@ -151,6 +91,21 @@ class Horario(ModeloBase):
     class Meta:
         verbose_name = 'Horario'
         verbose_name_plural = 'Horarios'
+    
+
+
+class Imagenes(ModeloBase):
+    cancha_id = models.ForeignKey(Cancha, on_delete = models.CASCADE, related_name = 'imagen_cancha')
+    imagen_cancha = models.ImageField('Imagen de cancha', upload_to = 'cancha/', max_length = 255, null = True)
+
+    class Meta:
+        verbose_name = 'Imagen'
+        verbose_name_plural = 'Imagenes'
+
+
+
+
+
     
 
 #Aqui iran los datos relacionados con las reservas
@@ -166,6 +121,11 @@ class Reserva(ModeloBase):
     class Meta:
         verbose_name = 'Reserva'
         verbose_name_plural = 'Reservas'
+
+ 
+
+
+
 
 
 

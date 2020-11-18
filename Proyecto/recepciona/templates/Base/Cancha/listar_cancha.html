@@ -1,66 +1,55 @@
 {% extends 'index.html' %}
-
-
-
-
+{% load staticfiles %}
 {% block titulo %}
-Listado de Canchas
+RecepcionaSport | Listado de Servicios
 {% endblock titulo %}
-
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/lib/datatable/dataTables.bootstrap.min.css' %}">
+{% endblock extra_css %}
 {% block body %}
-
-    {% if canchas %}
-<button onclick="abrir_modal_creacion('{% url 'Base:crear_cancha' %}')" class="btn btn-primary" type="button">Agregar</button>
 <div class="card">
-  <div class="card-header">         
-        <strong class="card-title">Listado de canchas</strong>
-      </div>      
-    
-  <div class="table-stats order-table ov-h">
-    <table id="tabla_libros" class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Nombre</th> 
-          <th>Descripcion</th> 
-          <th>Valor</th> 
-          <th>tipo_cancha</th> 
-          <th>superficie</th> 
-          <th>centro_dep</th> 
-          <th>Opciones</th>         
-        </tr>
-      </thead>
-      <tbody>
-          
-            {% for c in canchas %}
-            <tr>
-            <td>{{ c.id}}</td>
-            <td>{{ c.nombre }}</td>
-            <td>{{ c.descripcion}}</td>
-            <td>{{ c.valor}}</td>
-            <td>{{ c.tipo_cancha.nombre}}</td>
-            <td>{{ c.superficie.nombre}}</td>
-            <td>{{ c.centro_dep.nombre}}</td>
-            <td><button onclick="abrir_modal_edicion('{% url 'Base:editar_cancha' c.id %}')" class="btn btn-primary">Editar</button> 
-            <a href="{% url 'Base:eliminar_cancha' c.id %}" class="btn btn-danger">Eliminar</a></td>
-          </tr>
-            {% endfor %}
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-8">
+                <strong class="card-title">Listado de Canchas</strong>
+            </div>
+            <div class="col-md-4">
+                <button onclick="abrir_modal_creacion('{% url 'Base:crear_cancha' %}')" class="btn btn-primary" type="button"><i class="fa fa-plus"></i>&nbsp; Agregar</button>
+            </div>
+        </div>
         
-      </tbody>
-    </table>    
-  </div>
+    </div>
+    <div class="table-stats order-table ov-h">
+        <table id="tabla_canchas" class="table">
+            <thead>
+              <tr>
+              <th>#</th>
+              <th>Nombre</th> 
+              <th>Descripcion</th> 
+              <th>Valor</th> 
+              <th>tipo_cancha</th> 
+              <th>superficie</th> 
+              <th>Opciones</th>   
+                </tr>
+            </thead>
+            <tbody>               
+            </tbody>
+        </table>
+    </div>
 </div>
-  
-    {% else %}
-    <h1>No existen canchas</h1><br>
-    <button onclick="abrir_modal_creacion('{% url 'Base:crear_cancha' %}')" class="btn btn-primary" type="button">Agregar centro</button>
-    {% endif %}   
+<div class="modal fade" id="creacion" role="dialog">
 
+</div>
 <div class="modal fade" id="edicion" role="dialog">
- </div>
- <div class="modal fade" id="creacion" role="dialog">
+
 </div>
+<div class="modal fade" id="eliminacion" role="dialog">
 
-
+</div>
 {% endblock body %}
+{% block extrajs %}
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'js/lib/data-table/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/Base/index.js' %}"></script>
+{% endblock extrajs %}
 

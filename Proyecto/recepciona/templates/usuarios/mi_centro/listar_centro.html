@@ -8,7 +8,7 @@ Listado de centros
 {% block body %}
 
     {% if centros %}
-<button onclick="abrir_modal_creacion('{% url 'Base:crear_centro' %}')" class="btn btn-primary" type="button">Agregar centro</button>
+<button onclick="abrir_modal_creacion('{% url 'usuario:crear_centro' %}')" class="btn btn-primary" type="button">Agregar centro</button>
 <div class="card">
   <div class="card-header">         
         <strong class="card-title">Listado de servicios</strong>
@@ -20,10 +20,12 @@ Listado de centros
         <tr>
           <th>#</th>
           <th>Nombre</th>
+          <th>Descripcion</th>
+          <th>Imagen de portada</th>
+          <th>Logo de centro</th>
           <th>Direccion</th>
           <th>Region</th>
-          <th>Comuna</th> 
-          <th>Ciudad</th>       
+          <th>Comuna</th>              
           <th>Opciones</th>        
         </tr>
       </thead>
@@ -33,12 +35,15 @@ Listado de centros
             <tr>
             <td>{{ centro.id}}</td>
             <td>{{ centro.nombre }}</td>
+            <td>{{ centro.descripcion }}</td>
+            <td>{{ centro.imagen_portada }}</td>
+            <td>{{ centro.logo }}</td>
             <td>{{ centro.direccion}}</td>
             <td>{{ centro.region}}</td>
             <td>{{ centro.comuna}}</td>
             <td>{{ centro.ciudad}}</td>
-            <td><button onclick="abrir_modal_edicion('{% url 'Base:editar_centro' centro.id %}')" class="btn btn-primary">Editar</button> 
-            <a href="{% url 'Base:eliminar_centro' centro.id %}" class="btn btn-danger">Eliminar</a></td>
+            <td><button onclick="abrir_modal_edicion('{% url 'usuario:editar_centro' centro.id %}')" class="btn btn-primary">Editar</button> 
+            <a href="{% url 'usuario:eliminar_centro' centro.id %}" class="btn btn-danger">Eliminar</a></td>
           </tr>
             {% endfor %}
         
@@ -49,7 +54,7 @@ Listado de centros
   
     {% else %}
     <h1>No existen centros</h1><br>
-    <a href="{% url 'Base:crear_centro' %}" class="btn btn-primary">Agregar</a>
+    <a href="{% url 'usuario:crear_centro' %}" class="btn btn-primary">Agregar</a>
     {% endif %}   
 
 <div class="modal fade" id="edicion" role="dialog">

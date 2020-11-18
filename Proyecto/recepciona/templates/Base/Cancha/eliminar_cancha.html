@@ -1,14 +1,16 @@
-{% extends 'index.html' %}
-{% block titulo %}
-Eliminar cancha
-{% endblock titulo %}
-{% block body %}  
-<form method="POST">
-        {% csrf_token %}  
-        {{ form.as_p }}
-        <P><strong>¿Desea eliminar el registro {{ object }}</strong></P>
-        <button type="submit">Eliminar</button>    
-        <a href="{% url 'Base:listar_cancha' %}" class="btn btn-danger">Cancelar</a>           
-</form>
-     
-{% endblock body %}
+<div class="modal-dialog modals-default">
+        <div class="modal-content">
+            <div class="modal-header">
+                Eliminación de {{ object }}
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center" >{% csrf_token %}
+                <h3><strong>¿Desea eliminar {{ object }} ?</strong></h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-align="right"
+                    onclick="eliminar({{ object.pk }});"><strong>CONFIRMAR ELIMINACIÓN</strong></button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><strong>CANCELAR</strong></button>
+            </div>
+        </div>
+    </div>

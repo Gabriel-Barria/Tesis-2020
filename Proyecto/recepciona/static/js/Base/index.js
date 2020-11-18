@@ -15,12 +15,13 @@ function listadoCancha(){
                 fila += '<td>' + (i +1) + '</td>';
                 fila += '<td>' + response[i]["fields"]['nombre'] + '</td>';
                 fila += '<td>' + response[i]["fields"]['descripcion'] + '</td>';
-                fila += '<td>' + response[i]["fields"]['valor'] + '</td>';
-                fila += '<td>' + response[i]["fields"]['servicios'] + '</td>';
+                fila += '<td>$' + response[i]["fields"]['valor'] + '</td>';
                 fila += '<td>' + response[i]["fields"]['tipo_cancha'] + '</td>';
                 fila += '<td>' + response[i]["fields"]['superficie'] + '</td>';
-                fila += '<td>' + response[i]["fields"]['centro_dep'] + '</td>';
-                fila += '<td><button> EDITAR </button><button>Eliminar</button></td>';
+                fila += '<td><button type = "button" class = "btn btn-primary btn-sm tableButton"';
+                fila += ' onclick = "abrir_modal_edicion(\'/Base/actualizar_cancha/' + response[i]['pk']+'/\');"> EDITAR </button>';
+                fila += '<button type = "button" class = "btn btn-danger tableButton  btn-sm" ';
+                fila += 'onclick = "abrir_modal_eliminacion(\'/Base/eliminar_cancha/' + response[i]['pk'] +'/\');"> ELIMINAR </buttton></td>';
                 fila += '</tr>';
 
                 $('#tabla_canchas tbody').append(fila);
@@ -54,23 +55,69 @@ function listadoCancha(){
 
     });
 }
-function registrar(){
-	$.ajax({
-		data: $('#form_creacion').serialize(),
-		url:  $('#form_creacion').attr('action'),
-		type: $('#form_creacion').attr('method'),
-		success: function(response){
-			
-			listadoCancha();
-			cerrar_modal_creacion();
-		},	
-		error: function(error){
-			console.log(error);
-			
-		}
-	});
+function registrar() {
+    activarBoton();
+    var data = new FormData($('#form_creacion').get(0));
+    
+    $.ajax({
+        data: data,
+        url: $('#form_creacion').attr('action'),
+        type: $('#form_creacion').attr('method'),
+        cache:false,
+        contentType:false,
+        processData:false,
+        success: function (response) {
+            notificacionSuccess(response.mensaje);           
+            listadoCancha();
+            cerrar_modal_creacion();
+        },
+        error: function (error) {
+           notificacionError(error.responseJSON.mensaje); 
+           mostrarErroresCreacion(error);
+           activarBoton();
+            
+        }
+    });
 }
-
+function editar(){
+    activarBoton();
+    var data = new FormData($('#form_edicion').get(0));
+    $.ajax({
+        data: data,
+        url: $('#form_edicion').attr('action'),
+        type: $('#form_edicion').attr('method'),
+        cache:false,
+        contentType:false,
+        processData:false,
+        success: function (response) {
+            notificacionSuccess(response.mensaje);
+            listadoCancha();
+            cerrar_modal_edicion();
+        },
+        error: function (error) {
+            notificacionError(error.responseJSON.mensaje);
+            mostrarErroresEdicion(error);
+            activarBoton();
+        }
+    });
+}
+function eliminar(pk) {
+    $.ajax({
+        data:{
+            csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
+        },
+        url: '/Base/eliminar_cancha/'+pk+'/',
+        type: 'post',
+        success: function (response) {
+            notificacionSuccess(response.mensaje);
+            listadoCancha();
+            cerrar_modal_eliminacion();
+        },
+        error: function (error) {
+            notificacionError(error.responseJSON.mensaje);
+        }
+    });
+}
 $(document).ready(function (){
     listadoCancha();
 });

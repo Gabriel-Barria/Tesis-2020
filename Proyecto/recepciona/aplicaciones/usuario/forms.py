@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from aplicaciones.usuario.models import Usuario
+from .models import Usuario, Centro
+
 from django.forms import *
 class FormularioLogin(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -33,13 +34,16 @@ class FormularioUsuario(ModelForm):
     ))
     class Meta:
         model = Usuario
-        fields = ('email', 'username', 'nombres','apellidos', 'usuario_administrador' )
+        fields = ('email', 'username','nombres','apellidos','role')
         labels = {
             'email': 'Email',
             'username': 'Nombre de usuario',
             'nombres': 'Nombres',
             'apellidos': 'Apellidos',
-            'usuario_administrador': '¿Usuario empresa?'
+            'role': 'Role',
+            
+
+            
             
             }
         widgets = {
@@ -54,23 +58,27 @@ class FormularioUsuario(ModelForm):
                 'class': 'form-control',
                 'placeholder':'Nombre de usuario',
             }
-        ),       
+        ),
             'nombres': TextInput(
                 attrs={
                 'class': 'form-control',
-                'placeholder':'Nombres',
+                'placeholder':'Ingrese nombres',
             }
-        ),       
+        ),
             'apellidos': TextInput(
                 attrs={
                 'class': 'form-control',
-                'placeholder':'Apellidos',
+                'placeholder':'Ingrese apellidos',
             }
         ),
-            'usuario_administrador': CheckboxInput(
+            'role': Select(
                 attrs={
-                }
-        )
+                'class': 'form-control',
+                'placeholder':'Role',
+            }
+        ),  
+             
+        
         }
     def clean_password2(self):
 
@@ -87,4 +95,155 @@ class FormularioUsuario(ModelForm):
         if commit:
             user.save()
         return user
+class EditarPerfilForms(ModelForm):
+
+    class Meta:
+        model = Usuario
+        fields = ('email', 'username','nombres','apellidos','direccion','region','provincia','comuna','imagen')
+        labels = {
+            'email': 'Email',
+            'username': 'Nombre de usuario',
+            'nombres': 'Nombres',
+            'apellidos': 'Apellidos',
+            'direccion': 'Direccion',
+            'region': 'Region',
+            'provincia':'Provincia',
+            'comuna':'Comuna',
+            'imagen':'Imagen'
+
+            
+            
+            }
+        widgets = {
+            'email': EmailInput(
+                attrs={
+                'class': 'form-control',
+                'placeholder':'Correo Electronico',
+            }
+        ),   
+            'username': TextInput(
+                attrs={
+                'class': 'form-control',
+                'placeholder':'Nombre de usuario',
+            }
+        ),
+            'nombres': TextInput(
+                attrs={
+                'class': 'form-control',
+                'placeholder':'Ingrese nombres',
+            }
+        ),
+            'apellidos': TextInput(
+                attrs={
+                'class': 'form-control',
+                'placeholder':'Ingrese apellidos',
+            }
+        ),
+            'direccion': TextInput(
+                attrs={
+                'class': 'form-control',
+                'placeholder':'Ingrese su dirección',
+            }
+        ),
+            'region': Select(
+                attrs={
+                'class': 'form-control',
+                
+            }
+        ),  
+        'provincia': Select(
+                attrs={
+                'class': 'form-control',
+                
+            }
+        ),
+        'comuna': Select(
+                attrs={
+                'class': 'form-control',
+                
+            }
+        ),
+            
+        
+        }
+
+
+
+class CentroForm(ModelForm):
+    class Meta:
+        model = Centro
+        fields = ['nombre','descripcion','imagen_portada','logo','direccion', 'region', 'provincia', 'comuna']
+        labels = {
+            
+            'nombre': 'Nombre del centro',
+            'descripcion': 'Descripcion',
+            'imagen_portada': 'Imagen de portada',
+            'logo': 'Logo del centro',
+            'direccion': 'Direccion',
+            'region': 'Region',
+            'provincia': 'Provincia',
+            'comuna': 'Comuna',
+            }
+        widgets = {
+            
+            'nombre': TextInput(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Nombre de centro',
+                    'id': 'nombre',
+                }
+            ),
+            'descripcion': TextInput(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Descripcion',
+                    'id': 'descripcion',
+                }
+            ),
+            'imagen_portada': TextInput(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Imagen de portada',
+                    'id': 'imagen_portada',
+                }
+            ),
+            'logo': TextInput(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Logo del centro',
+                    'id': 'logo',
+                }
+            ),
+            'direccion': TextInput(
+                attrs = {
+                    'class':'form-control',
+                    'placeholder': 'Direccion',
+                    'id': 'direccion',
+                }
+            ),
+            'region': Select(
+                attrs = {
+                    'class':'form-control',
+                    'id': 'id_region',
+                }
+            ),
+            'provincia': Select(
+                attrs = {
+                    'class':'form-control',
+                    'id': 'id_provincia',
+                }
+            ),
+            'comuna': Select(
+                attrs = {
+                    'class':'form-control',
+                    'id': 'id_comuna',
+                }
+            ),
+        }
+
+
+
+
+
+
     
