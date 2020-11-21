@@ -64,7 +64,7 @@
                                     <div class="card"> 
                                         <a href=""> 
                                                        
-                                        <img class="card-img-top" src="{% static 'images/tenis.jpg' %}" alt="Imagen de cancha" height="250">
+                                        <img class="card-img-top" src="{{ d.imagen.url }}" alt="" height="250">
                                         
                                         <img class="card-img-top" src="" alt="Imagen de cancha" height="250">
                                        
@@ -136,6 +136,15 @@
 
 {% block extrajs %}
 
+<style>
+.fc-event:hover {
+border-color: #1c7d87;
+}
+.fc-event:hover .fc-content {
+color: #1c7d87;
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
              
@@ -177,6 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
                          },
                      {% endfor %}                               
                      ],
+                     eventBackgroundColor: 'black',
                      
                  
                

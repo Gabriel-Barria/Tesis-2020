@@ -163,23 +163,17 @@ class EditarPerfil(UpdateView):
 
 
 
-class ListadoCentro(View):
-    model = Centro
-    form_class = CentroForm
+class ListadoCentro(TemplateView):
     template_name = 'usuarios/mi_centro/listar_centro.html'
     
-    def get_queryset(self):
-        return self.model.objects.filter(estado = True)
-
     def get_context_data(self,**kwargs):
-        contexto = {}
-        contexto['centros'] = self.get_queryset()
-        contexto['form'] = self.form_class
+         
+         
+         context = {}
+         context['object'] = Centro.objects.all()
+         
         
-        return contexto
-
-    def get(self,request,*args,**kwargs):
-        return render(request,self.template_name,self.get_context_data())
+         return context
 
     
 
@@ -188,7 +182,6 @@ class ActualizarCentro(UpdateView):
     model = Centro
     template_name = 'usuarios/mi_centro/centro.html'
     form_class = CentroForm
-    success_url = reverse_lazy('usuarios:listar_centro')
 
     def get_context_data(self, **kwargs):
         pk = self.kwargs.get('pk')
@@ -199,24 +192,27 @@ class ActualizarCentro(UpdateView):
         context["comuna"] = Comunas.objects.all()
         context["obj"] = Centro.objects.filter(pk=pk).first()
         return context
+         
 
-class CrearCentro(CreateView):
-    model = Centro
-    template_name = 'usuarios/mi_centro/crear_centro.html'
-    form_class = CentroForm
-    success_url = reverse_lazy('Base:listar_centro')
-    def get_context_data(self, **kwargs):
-        context = super(CrearCentro, self).get_context_data(**kwargs)
-        context["region"] = Regiones.objects.all()  
-        context["provincia"] = Provincias.objects.all()
-        context["comuna"] = Comunas.objects.all()
-        return context
-class EliminarCentro(DeleteView):
-    model = Centro  
+    def post(self,request,*args,**kwargs):
+        if request.is_ajax():
+            form = self.form_class(data = request.POST, files = request.FILES,instance = self.get_object())
+            if form.is_valid():
+                form.save()
+                mensaje = f'{self.model.__name__} actualizado correctamente!'
+                error = 'No hay error!'
+                response = JsonResponse({'mensaje': mensaje, 'error': error})
+                response.status_code = 201
+                return response
+            else:
+                mensaje = f'{self.model.__name__} no se ha podido actualizar!'
+                error = form.errors
+                response = JsonResponse({'mensaje': mensaje, 'error': error})
+                response.status_code = 400
+                return response
+        else:
+            return redirect('usuarios:inicio_centro')
+   
 
-    def post(self, request, pk, *args, **kwargs):
-        object = Centro.objects.get(id=pk)
-        object.estado = False
-        object.save()
-        return redirect('usuario:listar_centro')
+
     

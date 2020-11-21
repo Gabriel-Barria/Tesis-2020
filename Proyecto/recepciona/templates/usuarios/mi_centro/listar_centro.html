@@ -1,68 +1,96 @@
 {% extends 'index.html' %}
 {% load staticfiles %}
-
-{% block titulo %}
-Listado de centros
-{% endblock titulo %}
-
 {% block body %}
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+<style>
+  .imagen_perfil{
+    width: 400px;
+    height: 250px;
+  }
+  .logo_centro{
+    width: 300px;
+    height: 100px;
+  }
+</style>
+        <!-- Profile Image -->
+        <div class="card card-primary card-outline">
+          <div class="card-body box-profile">
+            
+            <div class="text-center">
+           {% if request.user.centro.imagen_portada %}
+              <img class="img-circle imagen_perfil"
+                   src="{{ request.user.centro.imagen_portada.url }}"
+                   alt="User profile picture">
+                  </div>
+            {% else %}
+            <img class="img-circle imagen_perfil"
+                   src=""
+                   alt="No has cargado ninguna foto">
+                  </div>
+                  {% endif %}
 
-    {% if centros %}
-<button onclick="abrir_modal_creacion('{% url 'usuario:crear_centro' %}')" class="btn btn-primary" type="button">Agregar centro</button>
-<div class="card">
-  <div class="card-header">         
-        <strong class="card-title">Listado de servicios</strong>
-      </div>      
-    
-  <div class="table-stats order-table ov-h">
-    <table id="tabla_libros" class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Nombre</th>
-          <th>Descripcion</th>
-          <th>Imagen de portada</th>
-          <th>Logo de centro</th>
-          <th>Direccion</th>
-          <th>Region</th>
-          <th>Comuna</th>              
-          <th>Opciones</th>        
-        </tr>
-      </thead>
-      <tbody>
+            <h3 class="profile-username text-center">{{ request.user.centro }}</h3> <br>
+
+            <button type="button" class="btn btn-primary" onclick="abrir_modal_edicion('{% url 'usuarios:actualizar_centro' request.user.centro.pk %}');">Editar mi centro</button>
+            
+
+
+            
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+        <!-- About Me Box -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">Datos</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <strong><i class="menu-icon fa fa-map-marker"></i> Direccion</strong>
+
+            <p class="text-muted">
+              {{ request.user.centro.direccion }},{{ request.user.centro.comuna }}
+            </p>
+           
+
+            <hr>
+
+            <strong><i class=""></i> Nombre</strong>
+
+            <p class="text-muted">
+                {{ request.user.centro.nombre}}
+            </p>
+
+           <hr>
+           <strong><i class=""></i> Logo</strong>
+            {% if request.user.centro.logo %}
+            <p class="text-muted">
+              <img class="logo_centro" src="{{ request.user.centro.logo.url}}" alt="Logo">
+            </p>
+            {% else %}
+            <p class="text-muted">
+              No hay imagen!
+          </p>
+          {% endif %}
+
+          </div>
           
-            {% for centro in centros %}
-            <tr>
-            <td>{{ centro.id}}</td>
-            <td>{{ centro.nombre }}</td>
-            <td>{{ centro.descripcion }}</td>
-            <td>{{ centro.imagen_portada }}</td>
-            <td>{{ centro.logo }}</td>
-            <td>{{ centro.direccion}}</td>
-            <td>{{ centro.region}}</td>
-            <td>{{ centro.comuna}}</td>
-            <td>{{ centro.ciudad}}</td>
-            <td><button onclick="abrir_modal_edicion('{% url 'usuario:editar_centro' centro.id %}')" class="btn btn-primary">Editar</button> 
-            <a href="{% url 'usuario:eliminar_centro' centro.id %}" class="btn btn-danger">Eliminar</a></td>
-          </tr>
-            {% endfor %}
-        
-      </tbody>
-    </table>    
+        </div>
+       
+      </div>
+     
+     
+     
+    </div>
+    
   </div>
-</div>
-  
-    {% else %}
-    <h1>No existen centros</h1><br>
-    <a href="{% url 'usuario:crear_centro' %}" class="btn btn-primary">Agregar</a>
-    {% endif %}   
 
-<div class="modal fade" id="edicion" role="dialog">
- </div>
- <div class="modal fade" id="creacion" role="dialog">
-</div>
-
-
+  <div class="modal fade" id="edicion" role="dialog"></div>
 {% endblock body %}
-
-
+{% block extrajs %}
+<script src="{% static 'js/usuarios/index_centro.js' %}"></script>
+{% endblock extrajs %}

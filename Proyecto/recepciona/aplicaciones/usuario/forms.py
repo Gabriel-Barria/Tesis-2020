@@ -200,20 +200,7 @@ class CentroForm(ModelForm):
                     'id': 'descripcion',
                 }
             ),
-            'imagen_portada': TextInput(
-                attrs = {
-                    'class':'form-control',
-                    'placeholder': 'Imagen de portada',
-                    'id': 'imagen_portada',
-                }
-            ),
-            'logo': TextInput(
-                attrs = {
-                    'class':'form-control',
-                    'placeholder': 'Logo del centro',
-                    'id': 'logo',
-                }
-            ),
+            
             'direccion': TextInput(
                 attrs = {
                     'class':'form-control',
@@ -237,6 +224,18 @@ class CentroForm(ModelForm):
                 attrs = {
                     'class':'form-control',
                     'id': 'id_comuna',
+                }
+            ),
+            'imagen_portada': FileInput(
+                attrs = {
+                    'class':'form-control-file',
+                    
+                    
+                }
+            ),
+            'logo': FileInput(
+                attrs = {
+                   'class':'form-control-file', 
                 }
             ),
         }

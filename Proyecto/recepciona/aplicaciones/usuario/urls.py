@@ -1,6 +1,6 @@
 
 from django.urls import path
-from .views import ListadoUsuario, EditarUsuario, EliminarUsuario, RegistrarUsuario, MiPerfil , EditarPerfil , ListadoCentro, ActualizarCentro, EliminarCentro, CrearCentro
+from .views import ListadoUsuario, EditarUsuario, EliminarUsuario, RegistrarUsuario, MiPerfil , EditarPerfil , ListadoCentro, ActualizarCentro
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 
@@ -14,11 +14,17 @@ path('mi_perfil/',MiPerfil.as_view(),name='mi_perfil'),
 path('actualizar_perfil/<int:pk>/',login_required(EditarPerfil.as_view()),name='actualizar_perfil'),
 
 
+
+
+
 #url de centro deportivo
 
-path('mi_centro/crear_centro/',login_required(CrearCentro.as_view()), name = 'crear_centro'),
-path('mi_centro/listar_centro/',login_required(ListadoCentro.as_view()), name = 'listar_centro'),
-path('mi_centro/editar_centro/<int:pk>',login_required(ActualizarCentro.as_view()), name = 'editar_centro'),
-path('mi_centro/eliminar_centro/<int:pk>',login_required(EliminarCentro.as_view()), name = 'eliminar_centro'), 
+
+path('mi_centro/',login_required(ListadoCentro.as_view()), name = 'mi_centro'),
+path('inicio_centro/',login_required(TemplateView.as_view(template_name='usuarios/listar_centro.html')),name='inicio_centro'),
+path('actualizar_centro/<int:pk>/',login_required(ActualizarCentro.as_view()),name='actualizar_centro'),
+
+
+
 
 ]

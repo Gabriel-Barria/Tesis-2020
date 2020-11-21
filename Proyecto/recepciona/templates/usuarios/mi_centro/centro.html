@@ -7,33 +7,39 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form action="{% url 'usuario:editar_centro' object.id%}" method="POST">
+        <form id="form_edicion" action="{% url 'usuarios:actualizar_centro' object.id%}" method="POST" enctype="multipart/form-data">
         <div class="modal-body">
+            <div id="erroresEdicion">
+
+            </div>
             
             {% csrf_token %}
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="col-md-6">{{ form.nombre.label }}</div>
-                    <div class="col-md-6">{{ form.nombre }}</div>
-                </div>
-                <div class="col-md-6">
-                    <div class="col-md-6">{{ form.direccion.label }}</div>
-                    <div class="col-md-6">{{ form.direccion }}</div>
-                </div>
-                <div class="col-md-6">
-                    <div class="col-md-6">{{ form.region.label }}</div>
-                    <div class="col-md-6">
+           
+              
+                    <label>Nombre</label>
+                    {{ form.nombre }}
+
+                    <label>Descripcion</label>
+                    {{ form.descripcion }} 
+               
+               
+                    <label>Direccion</label>
+                    {{ form.direccion }}              
+                
+                   
+
+                    <label>{{ form.region.label }}</label>
+                  
                     <select class="form-control" name="region" id="id_region">
                         <option value="0">----------</option>
                         {% for item in region %}
                         <option value="{{item.region_id}}">{{item.region_nombre}}</option>
                         {% endfor %}
                     </select>  
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="col-md-6">{{ form.provincia.label }}</div>
-                    <div class="col-md-6">
+                
+                
+               
+                    <label>{{ form.provincia.label }} </label>                    
                         <select class="form-control" name="provincia" id="id_provincia">
                             <option value="0">----------</option>
                             {% for item in provincia %}
@@ -41,11 +47,10 @@
                             {% endfor %}
                         </select> 
     
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="col-md-6">{{ form.comuna.label }}</div>
-                    <div class="col-md-6">
+                  
+             
+               
+                    <label>{{ form.comuna.label }}</label>                    
                         <select class="form-control" name="comuna" id="id_comuna">
                             <option value="0">----------</option>
                             {% for item in comuna %}
@@ -53,16 +58,29 @@
                             {% endfor %}
                         </select>   
     
-                    </div>
-                </div>
+                 
+              
+                
+                    <label>Imagen portada</label>
+                    {{ form.imagen_portada }}
+                    
+              
+               
+                    <label>Logo</label>
+                   
+                        {{ form.logo }}
+    
+                  
+              
+
                 
                 
     
-            </div>
+            
         </div>
         <div class="modal-footer" >
-            <button class="btn btn-danger" type="button" onclick="cerrar_modal_creacion();">Cancelar</button>
-            <button class="btn btn-primary" type="submit">Confirmar</button>
+            <button class="btn btn-danger" type="button" onclick="cerrar_modal_edicion();">Cancelar</button>
+            <button class="btn btn-primary" type="button" onclick="editarCentro()" >Confirmar</button>
         
         </div>
     </form>
