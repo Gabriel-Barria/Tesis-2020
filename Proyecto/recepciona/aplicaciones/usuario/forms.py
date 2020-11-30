@@ -166,9 +166,6 @@ class EditarPerfilForms(ModelForm):
             
         
         }
-
-
-
 class CentroForm(ModelForm):
     class Meta:
         model = Centro
@@ -239,7 +236,118 @@ class CentroForm(ModelForm):
                 }
             ),
         }
+class FormUser(ModelForm):
 
+    password1 = CharField(label = 'Contraseña', 
+    widget = PasswordInput(
+        attrs = {
+            'class': 'form-control',
+            'placeholder': 'Ingrese contraseña',
+            'id':'password1',
+            'required':'required',
+        }
+
+    ))
+    password2 = CharField(label = 'Contraseña', widget = PasswordInput(
+        attrs = {
+            'class': 'form-control',
+            'placeholder': 'Repita contraseña',
+            'id':'password2',
+            'required':'required',
+        }
+
+    ))
+    class Meta:
+        model = Usuario
+        fields = ('email', 'username','nombres','apellidos','usuario_administrador','direccion','region','provincia','comuna')
+        labels = {
+            'email': 'Email',
+            'username': 'Nombre de usuario',
+            'nombres': 'Nombres',
+            'apellidos': 'Apellidos',
+            'direccion':'Direccion',
+            'region':'Region',
+            'provinicia':'Provincia',
+            'comuna':'Comuna',
+            
+
+            
+            
+            }
+        widgets = {
+            'email': EmailInput(
+                attrs={
+                'class': 'form-control',
+                'placeholder':'Correo Electronico',
+            }
+        ),   
+            'username': TextInput(
+                attrs={
+                'class': 'form-control',
+                'placeholder':'Nombre de usuario',
+            }
+        ),
+            'nombres': TextInput(
+                attrs={
+                'class': 'form-control',
+                'placeholder':'Ingrese nombres',
+            }
+        ),
+            'apellidos': TextInput(
+                attrs={
+                'class': 'form-control',
+                'placeholder':'Ingrese apellidos',
+            }
+        ),
+            'usuario_administrador': HiddenInput(
+                attrs={
+                'value':'False'
+                
+            }
+        ), 
+            'direccion': TextInput(
+                attrs={
+                'class': 'form-control',
+                'placeholder':'Ingrese su direccion',
+                
+            }
+        ),
+         'region': Select(
+                attrs = {
+                    'class':'form-control',
+                    'id': 'id_region',
+                }
+            ),
+            'provincia': Select(
+                attrs = {
+                    'class':'form-control',
+                    'id': 'id_provincia',
+                }
+            ),
+            'comuna': Select(
+                attrs = {
+                    'class':'form-control',
+                    'id': 'id_comuna',
+                }
+            ), 
+             
+        
+        }
+    def clean_password2(self):
+
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+
+        if password1 != password2:
+            raise forms.ValidationError('Contraseñas no coinciden')
+        return password2
+
+    def save(self,commit = True):
+        user = super().save(commit = False)
+        user.set_password(self.cleaned_data['password1'])
+        if commit:
+            user.save()
+        return user
 
 
 

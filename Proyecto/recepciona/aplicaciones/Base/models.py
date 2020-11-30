@@ -22,7 +22,7 @@ class Superficie(ModeloBase):
 
 class Tipo_cancha(ModeloBase):    
     nombre = models.CharField('Nombre', max_length=40, unique = True)
-    imagen = models.ImageField('Deporte', upload_to = 'deporte_img/', max_length = 255, null = True, blank = True)
+    imagen = models.ImageField('Imagen', upload_to = 'deporte_img/', max_length = 255, null = True, blank = True)
 
     class Meta:
         verbose_name = 'Tipo de cancha'
@@ -95,12 +95,15 @@ class Horario(ModeloBase):
 
 
 class Imagenes(ModeloBase):
-    cancha_id = models.ForeignKey(Cancha, on_delete = models.CASCADE, related_name = 'imagen_cancha')
-    imagen_cancha = models.ImageField('Imagen de cancha', upload_to = 'cancha/', max_length = 255, null = True)
+    
+    titulo = models.CharField('Titulo', max_length = 50)
+    imagen = models.ImageField('Imagen', upload_to = 'imagen/', max_length = 255, null = True)
 
     class Meta:
         verbose_name = 'Imagen'
         verbose_name_plural = 'Imagenes'
+    def __str__(self):
+        return self.titulo
 
 
 

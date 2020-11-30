@@ -1,0 +1,146 @@
+{% load staticfiles %}
+
+    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {% for c in cancha %}
+                    <h5 class="modal-title" id="exampleModalLabel">Reserva de cancha {{ c.nombre }}</h5>
+                    
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+    
+                </div>
+                <div class="modal-body">
+                    <form id="form_creacion" action="{% url 'inicio_home' %}" method="POST" name="{% url 'mostrar-calendario' c.pk %}">
+                        {% csrf_token %}  
+                        {{ form.as_p }}
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="registrar();">Reservar</button>             
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+        <div id='calendar'></div>
+        
+        <style>
+     
+
+            .fc-timegrid-slot {
+                height: 2.5em !important;
+            }   
+           </style>
+    
+    <script>
+       
+   
+    
+
+    
+    $(document).ready(function() {
+        
+          var calendarEl = document.getElementById('calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+            headerToolbar: {
+            start: 'title',
+            center: '',
+            end: 'today prev,next'
+        },
+                     selectable: true,                          
+    
+                     selectOverlap: function(event) {
+                         return event.rendering === 'background';
+                     },
+                     
+                     select: function(selectionInfo) {                                
+                         $('#myModal').modal('show');
+                         {% for c in cancha %}
+                         var cancha = {{ c.pk }};
+                         {% endfor %}
+                         var start = selectionInfo.startStr; 
+                         var end = selectionInfo.endStr;
+                         var user = {{ request.user.id }};
+                         var color = 2;
+                         $('#id_date_start').val(start);
+                         $('#id_date_end').val(end);
+                         $('#id_usuario').val(user);
+                         $('#id_cancha').val(cancha);
+                         $('#id_color').val(color);
+                    },
+                    
+                     slotDuration: '01:00',    
+                     slotLabelFormat:{
+                     hour: 'numeric',
+                     minute: '2-digit',
+                     omitZeroMinute: false,
+                     meridiem: 'false',
+                     
+                                     },
+                    initialView: 'timeGridThreeDay',
+                    timeZone: 'UTC',
+                    events:[
+                {% for i in horario %}
+                    {
+                      id: '{{ i.pk }}',
+                      title: '{{ i.title }}',
+                      startTime: '{{ i.hora_inicio }}',
+                      endTime: '{{ i.hora_termino }}',
+                      daysOfWeek: [ {{ i.dia.day_number }} ],
+                      color: '#6c757d',/*secondary*/
+                    },
+                {% endfor %}
+                
+                {% for e in reserva %}
+                    {% ifequal request.user.pk e.usuario.pk %}                
+                            {
+                                id: 'e.pk',
+                                title: 'Tu reserva',
+                                start: '{{ e.date_start }}',
+                                end: '{{ e.date_end }}',
+                                color: '#28a745',/*succes*/
+                            },
+                        {% else %}
+                            {
+                                id: 'e.pk',
+                                title: 'Ocupado',
+                                start: '{{ e.date_start }}',
+                                end: '{{ e.date_end }}',
+                                color: '#6c757d',/*secondary*/
+                            },
+
+                    {% endifequal %}
+                {% endfor %}                               
+                         ],
+                    views: {
+                        timeGridThreeDay: {
+                        type: 'timeGrid',
+                        duration: { days: 3 },
+                    }
+                   }
+               });
+                 calendar.setOption('locale','Es')
+                 calendar.render();
+
+               
+               
+                });
+        
+               
+                    
+              
+               
+         
+    </script> 
+
+
+
+                
+                
+
+
+
+

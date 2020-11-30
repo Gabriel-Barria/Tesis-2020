@@ -1,7 +1,7 @@
 from django.urls import include, path
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
-from .views import CrearServicio, ListadoServicio, ActualizarServicio, EliminarServicio, CrearCancha, ListadoCancha, ActualizarCancha, EliminarCancha, CrearSuperficie, ListadoSuperficie, ActualizarSuperficie, EliminarSuperficie, CrearHorario, ListadoHorario, ActualizarHorario, EliminarHorario, CrearTipo, ListadoTipo, ActualizarTipo, EliminarTipo, CrearReserva, ListadoReservas, ActualizarReserva, EliminarReserva,  Descripcion_cancha, MisReservas
+from .views import CrearServicio, ListadoServicio, ActualizarServicio, EliminarServicio, CrearCancha, ListadoCancha, ActualizarCancha, EliminarCancha, CrearSuperficie, ListadoSuperficie, ActualizarSuperficie, EliminarSuperficie, CrearHorario, ListadoHorario, ActualizarHorario, EliminarHorario, CrearTipo, ListadoTipo, ActualizarTipo, EliminarTipo, CrearReserva, ListadoReservas, ActualizarReserva, EliminarReserva,  Descripcion_cancha, MisReservas, Filtro_cancha , CrearImagen , ListadoImagenes, ActualizarImagenes, EliminarImagen, MostrarImagen
 from . import views
 urlpatterns = [
     path('Servicio/crear_servicio/',login_required(CrearServicio.as_view()), name = 'crear_servicio'),
@@ -42,6 +42,18 @@ urlpatterns = [
     path('inicio_reserva/',login_required(TemplateView.as_view(template_name='Base/Reserva/listar_reserva.html')),name='inicio_reserva'),
     path('actualizar_reserva/<int:pk>/',login_required(ActualizarReserva.as_view()), name = 'actualizar_reserva'),
     path('eliminar_reserva/<int:pk>/',login_required(EliminarReserva.as_view()), name = 'eliminar_reserva'),
+
+    #CRUD IMAGENES
+    path('Imagen/crear_imagen/',login_required(CrearImagen.as_view()), name = 'crear_imagen'),
+    path('Imagen/listar_imagen/',login_required(ListadoImagenes.as_view()), name = 'listar_imagen'),
+    path('inicio_imagen/',login_required(TemplateView.as_view(template_name='Base/Imagen/listar_imagen.html')),name='inicio_imagen'),
+    path('actualizar_imagen/<int:pk>/',login_required(ActualizarImagenes.as_view()), name = 'actualizar_imagen'),
+    path('eliminar_imagen/<int:pk>/',login_required(EliminarImagen.as_view()), name = 'eliminar_imagen'),
+    path('imagen/<int:pk>/',login_required(MostrarImagen.as_view()), name = 'imagen'),
+
+    
+
+
     
 
 

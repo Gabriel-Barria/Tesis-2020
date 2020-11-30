@@ -1,209 +1,215 @@
-{% extends 'index.html' %}
 {% load staticfiles %}
-
-
-
-{% block panel-izquierdo %}
-    <form method="GET">
-        <div class="card">
-            <div class="card-header"><strong>Busqueda</strong></div>
-                <div class="card-body card-block">
-                    <div class="form-group"><label for="company" class=" form-control-label">Palabra clave</label><input type="text" name="buscar_palabra"  placeholder="Palabra clave" class="form-control"></div>
-                        <div class="col-12 col-md-9">
-                            <label for="company" class=" form-control-label">Comuna</label>
-                                <select name="comuna_search" id="select" class="form-control">
-                                    <option value="">Seleccione</option>
-                                    {% for c in comuna %}
-                                    <option value="{{ c.pk }}">{{ c.comuna_nombre}}</option>
-                                    {% endfor %}
-                                </select>
-                        </div> 
-                </div>                   
-        <button class="btn btn-primary">Buscar</button>
-        </div>
-    </form>
-                          
-{% endblock panel-izquierdo %}
-{% block body %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/lib/main.css' %}">
-<script src="{% static 'js/lib/es.js' %}"></script>
-<script src="{% static 'js/lib/main.js' %}"></script>        
-<link href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css' rel='stylesheet'>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" ></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Home</title>
+        <link rel="icon" type="image/x-icon" href="{% static 'Home/assets/img/favicon.ico' %}" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'Home/css/styles.css' %}" rel="stylesheet" />
+        <link href="{% static 'css/lib/main.css' %}" rel="stylesheet" />
+    </head>
 <style>
-    #custom-nav-home-tab, #custom-nav-profile-tab, #custom-nav-contact-tab  {
-        width: 33%;
-
-    }
-
+header.masthead {
+padding-top: 10.5rem;
+padding-bottom: 6rem;
+text-align: center;
+color: #fff;
+{% for c in centro %}      
+background-image: url("{{ c.imagen_portada.url }}");
+{% endfor %}
+background-repeat: no-repeat;
+background-attachment: scroll;
+background-position: center center;
+background-size: cover;
+}
+.tabs-reserva{
+width: 33%;
+}
 </style>
-{% endblock extra_css %}
-
-    
-       
-        
-            <div class="custom-tab">
-
-                <nav>
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="custom-nav-home-tab" data-toggle="tab" href="#custom-nav-home" role="tab" aria-controls="custom-nav-home" aria-selected="true">Deporte</a>
-                        <a class="nav-item nav-link" id="custom-nav-profile-tab" data-toggle="tab" href="#custom-nav-profile" role="tab" aria-controls="custom-nav-profile" aria-selected="true">Canchas</a>
-                        <a class="nav-item nav-link" id="custom-nav-contact-tab" data-toggle="tab" href="#custom-nav-contact" role="tab" aria-controls="custom-nav-contact" aria-selected="true">Horario</a>
-                    </div>
-                </nav>
-                <div class="tab-content pl-3 pt-2" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="custom-nav-home" role="tabpanel" aria-labelledby="custom-nav-home-tab">
-                        <div class="row">
-                            {% for d in tipo_cancha %} 
-                            <form method="GET">
-                                <div class="col-md-4">
-                                    <div class="card"> 
-                                        <a href=""> 
-                                                       
-                                        <img class="card-img-top" src="{{ d.imagen.url }}" alt="" height="250">
-                                        
-                                        <img class="card-img-top" src="" alt="Imagen de cancha" height="250">
-                                       
-                                            <div class="card-body">
-                                                <input type="hidden" value="{{ d.pk }}" name="tipo_cancha" id="tipo_cancha"><h4 class="card-title mb-3">{{ d.nombre }}</h4></input>
-                                                    
-                                            </div>
-                                            <div class="footer">
-                                                <button class="btn btn-primary">Seleccionar</button>
-                                            </div>
-                                        </a>                   
-                                    </div>
-                                </div>
-                            </form>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="custom-nav-profile" role="tabpanel" aria-labelledby="custom-nav-profile-tab">
-                        <div class="row">
-                            
-                            {% for cancha in Canchas %} 
-                            <form method="GET">
-                                <input type="hidden"  name="buscar_reserva" value="{{ cancha.pk }}">
-                                <div class="col-md-4">
-                                    <div class="card"> 
-                                        <a href="{% url 'Descripcion_cancha' cancha.id %}"> 
-                                            {% if cancha.imagen %}            
-                                        <img class="card-img-top" src="{{ cancha.imagen.url }}" alt="Imagen de cancha" height="250">
-                                        {% else %}
-                                        <img class="card-img-top" src="" alt="Imagen de cancha" height="250">
-                                        {% endif %}
-                                            <div class="card-body">
-                                                    <h4 class="card-title mb-3">{{ cancha.nombre }}</h4>
-                                              <p class="card-text">{{ cancha.descripcion }}</p>                            
-                                                    <p class="card-text">{{ cancha.superficie }}</p>
-                                            </div>
-                                        </a> 
-                                        <button class="btn btn-primary" type="submit">Seleccionar</button>                  
-                                    </div>
-                                    
-                                </div>
-                                
-                            </form>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="custom-nav-contact" role="tabpanel" aria-labelledby="custom-nav-contact-tab">
-                       
-                           
-                      
-                        <div class="col-md-12 col-lg-7">
-                            <div class="center">
-                            <h2>Reservar</h2>
-                            </div>
-                            <div id='calendar'></div>                         
-                          </div>  
-                        
-                   </div>
+    <body id="page-top">
+    <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container">
+            {% for c in centro %}
+                <a class="navbar-brand js-scroll-trigger" href="#page-top"><img src="{{ c.logo.url }}" alt="" /></a>
+            {% endfor %}
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ml-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ml-auto">
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">Acerca de nosotros</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Galeria</a></li>
+                        {% if request.user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#reserva">Reservar</a></li>
+                        {% endif %}
+                        {% if request.user.usuario_administrador %}
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'index' %}">Administracion</a></li>
+                        {% endif %}
+                        {% if request.user.is_anonymous%}
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" onclick="abrir_modal_login_sin_error('{% url 'Login' %}');">Iniciar sesion</a></li>
+                        {% endif %}
+                        {% if request.user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'mis_reservas' request.user.pk %}">Mis reservas</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'logout' %}">Cerrar sesión</a></li>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
-
-          
-                              
-                 
-          
-
-    
-{% endblock body %}
-
-{% block extrajs %}
-
-<style>
-.fc-event:hover {
-border-color: #1c7d87;
-}
-.fc-event:hover .fc-content {
-color: #1c7d87;
-}
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-             
-             var calendarEl = document.getElementById('calendar');
-             var calendar = new FullCalendar.Calendar(calendarEl, {
-                 
-                 slotDuration: '01:00',    
-                 slotLabelFormat:{
-                 hour: 'numeric',
-                 minute: '2-digit',
-                 omitZeroMinute: false,
-                 meridiem: 'false',
-                                 },
-
-                                        
-                 initialView: 'timeGridThreeDay',
-                 themeSystem: 'bootstrap',
-                 timeZone: 'UTC',
-                 events:[
-                     {% for i in horario %}
-                     
-                         {
-                             id: '{{ i.pk }}',
-                             title: '{{ i.title }}',
-                             startTime: '{{ i.hora_inicio }}',
-                             endTime: '{{ i.hora_termino }}',
-                             daysOfWeek: [ {{ i.dia.day_number }} ],
-                             color: '{{ i.color.codigo }}',
-                         },
-                     {% endfor %}
-                     {% for e in reserva %}
-                     
-                         {
-                             id: 'e.pk',
-                             title: 'Reservado',
-                             start: '{{ e.date_start }}',
-                             end: '{{ e.date_end }}',
-                             color: '{{ e.color.codigo }}',
-                         },
-                     {% endfor %}                               
-                     ],
-                     eventBackgroundColor: 'black',
-                     
-                 
+        </nav>
+<!-- Masthead-->
+    <header class="masthead">
+        <div class="container">
+        {% for c in centro %}
+            <div class="masthead-subheading">Bienvenido a {{ c.nombre }}!</div>
+            <div class="masthead-heading text-uppercase">{{ c.descripcion }}</div>
+            {% if request.user.is_anonymous %}
+            <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger"  onclick="abrir_modal_login('{% url 'Login' %}');">Reservar ahora</a>
+            {% else %}
+            <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#reserva">Reservar ahora</a>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </header>
+<!--About-->
+    <section class="page-section" id="about">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Acerca de nosotros</h2>
+                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus deserunt iusto autem veritatis. 
+                 Autem, sunt reprehenderit eaque doloremque dolor reiciendis! Similique aliquam nihil fugit, doloremque laboriosam ad dolorem tempore et.</h3>
+            </div>
+        </div>
+    </section>
+<!--Galeria-->
+    <section class="page-section bg-light" id="portfolio">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Galeria</h2>
+                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+            </div>
+            <div class="row">
+                {% for i in imagen %}
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-toggle="modal" href="#portfolioModal1">
+                            <div class="portfolio-hover">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid" src="{{ i.imagen.url }}" alt="" />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">{{ i.titulo }}</div>
+                        </div>
+                    </div>
+                </div>
                
-               views: {
-                 timeGridThreeDay: {
-                 type: 'timeGrid',
-                 duration: { days: 3 },
-                 
-                 }
-               }
-           
-             });
-             
-             calendar.setOption('locale','Es')
-             calendar.render();
-             
-           });
-</script>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+<!-- Services-->
+{% if request.user.is_authenticated %}
+    <section class="page-section" id="reserva">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Reservar</h2>
+            </div>
+            <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+                <li class="nav-item tabs-reserva">
+                    <a class="nav-link active text-center" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Deportes</a>
+                </li>
+                <li class="nav-item tabs-reserva">
+                    <a class="nav-link text-center" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Canchas</a>
+                </li>
+                <li class="nav-item tabs-reserva">
+                    <a class="nav-link text-center" id="custom-content-below-messages-tab" data-toggle="pill" href="#custom-content-below-messages" role="tab" aria-controls="custom-content-below-messages" aria-selected="false">Horario</a>
+                </li>
+                <li class="nav-item">
+                </li>
+            </ul>
+            <div class="tab-content" id="custom-content-below-tabContent">
+                <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6 mb-4" id="contenedor-tipo">
+                           
+                        </div>
+                    </div>
+               </div>
+                <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
+                    <div class="row">
 
-{% endblock extrajs %}
+                        <div class="col-lg-4 col-sm-6 mb-4" id="contenedor-cancha">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="custom-content-below-messages" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
+                    <div id="contenedor-calendario"></div>
+                </div>
+            </div>
+        
+    </section>
+    {% else %}
+
+    {% endif %}
+
+    <div class="modal fade" id="login" role="dialog">
+
+    </div>
+    <div class="modal fade" id="register" role="dialog">
+
+    </div>
+    
+<!-- Portfolio Grid-->
+<!-- Team-->
+<!-- Footer-->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-lg-left"></div>
+                <div class="col-lg-4 my-3 my-lg-0">
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="col-lg-4 text-lg-right">
+                    <a class="mr-3" href="#!"></a>
+                    <a href="#!"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+   
+<!-- Portfolio Modals-->
+<!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<!-- Contact form JS-->
+        <script src="{% static 'Home/assets/mail/jqBootstrapValidation.js' %}"></script>
+        <script src="{% static 'Home/assets/mail/contact_me.js' %}"></script>
+<!-- Core theme JS-->
+        <script src="{% static 'Home/js/scripts.js' %}"></script>
+        <script src="{% static 'Home/js/index_home.js' %}"></script>
+        <script src="{% static 'Home/js/buscar-cancha.js' %}"></script>
+        <script src="{% static 'Home/js/calendario.js' %}"></script>
+        <script src="{% static 'Home/js/buscar-calendario.js' %}"></script>
+        <script src="{% static 'Home/js/modal_login.js' %}"></script>
+        <script src="{% static 'js/lib/main.js' %}"></script> 
+        <script src="{% static 'js/main.js' %}"></script> 
+    </body>
+</html>

@@ -19,10 +19,11 @@ from django.conf.urls.static import static
 from django.views.static import serve
 
 from django.urls import path, include, re_path
-from aplicaciones.Base.views import Inicio, home, MisReservas, Descripcion_cancha
+from aplicaciones.Base.views import Inicio, Home, MisReservas, Descripcion_cancha, Filtro_cancha,MostrarCalendario, Inicio_home
 from django.contrib.auth.decorators import login_required
-from aplicaciones.usuario.views import Login, logoutUsuario
+from aplicaciones.usuario.views import Login, logoutUsuario, RegistroUsuario
 from aplicaciones.Base import views
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
@@ -30,10 +31,14 @@ urlpatterns = [
     path('usuarios/',include(('aplicaciones.usuario.urls','usuarios'))),
     path('Base/',include(('aplicaciones.Base.urls','Base'))),
     path('Base/',login_required(Inicio.as_view()), name = 'index'),
-    path('',login_required(home), name = 'home'),    
+    path('',Home.as_view(), name = 'home'),  
+    path('inicio_home/',Inicio_home.as_view(),name='inicio_home'), 
+    path('filtro-cancha/<int:pk>/',login_required(Filtro_cancha.as_view()), name = 'filtro-cancha'),
+    path('mostrar-calendario/<int:pk>/',login_required(MostrarCalendario.as_view()), name = 'mostrar-calendario'), 
     path('accounts/login/',Login.as_view(), name = 'Login'),
     path('logout/' ,login_required(logoutUsuario), name = 'logout'),
     path('mis_reservas/<int:pk>',MisReservas.as_view(), name = 'mis_reservas'),
+    path('registrar_usuario/',RegistroUsuario.as_view(),name='registro_usuario'),
     path('Descripcion_cancha/<int:pk>',Descripcion_cancha.as_view(), name = 'Descripcion_cancha'),
     
   

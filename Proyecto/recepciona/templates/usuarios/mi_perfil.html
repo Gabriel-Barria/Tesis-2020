@@ -70,11 +70,11 @@
             </p>
 
             <hr>
-
+            {% if request.user.is_administrador %}  
             <strong><i class="far fa-file-alt"></i> Mi centro</strong>
 
             <p class="text-muted">{{ request.user.centro }}</p>
-
+            {% endif %}
            
           </div>
           

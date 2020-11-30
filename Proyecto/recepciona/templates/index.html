@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{% block titulo %}Bienvenido a Biblioteca.dev {% endblock titulo %}</title>
+    <title>{% block titulo %}Bienvenido a RecepcionSport {% endblock titulo %}</title>
     <meta name="description" content="Ela Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -62,7 +62,13 @@
                     <li>
                         <a href="{% url 'usuarios:listar_usuarios' %}"> <i class="menu-icon fa fa-group"></i>Usuario</a>
                     </li>
-                   
+                    <li>
+                        <a href="{% url 'Base:listar_imagen' %}"> <i class="menu-icon fa fa-picture-o"></i>Imagenes</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{% url 'mis_reservas' request.user.pk %}"> <i class="menu-icon fa fa-calendar"></i>Mis reservas</a>
+                    </li>
                     {% endif %}
                     
                   
@@ -119,7 +125,61 @@
 
             {% block body %}
 
+            <div class="row">
             
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-five">
+                            <div class="stat-icon dib flat-color-4">
+                                <i class="pe-7s-ball"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-text"><span class="count">{{ cancha.count }}</span></div>
+                                    <div class="stat-heading">Canchas registradas</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-five">
+                            <div class="stat-icon dib flat-color-4">
+                                <i class="pe-7s-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-text"><span class="count">{{ usuario.count }}</span></div>
+                                    <div class="stat-heading">Clientes registrados</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-five">
+                            <div class="stat-icon dib flat-color-4">
+                                <i class="pe-7s-date"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-text"><span class="count">{{ reserva.count }}</span></div>
+                                    <div class="stat-heading">Reservas realizadas</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
             
             {% endblock body %}
             <!-- .animated -->
@@ -127,18 +187,7 @@
         <!-- /.content -->
         <div class="clearfix"></div>
         <!-- Footer -->
-        <footer class="site-footer">
-            <div class="footer-inner bg-white">
-                <div class="row">
-                    <div class="col-sm-6">
-                        Copyright &copy; 2018 Ela Admin
-                    </div>
-                    <div class="col-sm-6 text-right">
-                        Designed by <a href="https://colorlib.com">Colorlib</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        
         <!-- /.site-footer -->
     </div>
 </div>

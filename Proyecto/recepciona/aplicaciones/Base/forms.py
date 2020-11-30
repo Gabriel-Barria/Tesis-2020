@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.forms import *
-from .models import Servicio, Superficie, Cancha, Tipo_cancha, Horario, Reserva
+from .models import Servicio, Superficie, Cancha, Tipo_cancha, Horario, Reserva, Imagenes
 
 class ServicioForm(ModelForm):
     class Meta:
@@ -18,17 +18,14 @@ class ServicioForm(ModelForm):
                     'id': 'nombre',
             })
         }
-
 class SuperficieForm(ModelForm):
     class Meta:
         model = Superficie
         fields = ['nombre']
-
 class TipoForm(ModelForm):
     class Meta:
         model = Tipo_cancha
         fields = ['nombre','imagen']
-
 class CanchaForm(ModelForm):
     class Meta:
         model = Cancha
@@ -97,7 +94,6 @@ class CanchaForm(ModelForm):
                 }
             ),
         }
-
 class HorarioForm(ModelForm):
     class Meta:
         model = Horario
@@ -143,8 +139,8 @@ class ReservaForm(ModelForm):
     class Meta:
         model = Reserva
         fields = ['usuario', 'cancha', 'date_start', 'date_end', 'color']
-
 class ReservaFormCliente(ModelForm):
+
     class Meta:
         model = Reserva
         fields = ['usuario', 'cancha', 'date_start', 'date_end', 'color']
@@ -186,7 +182,27 @@ class ReservaFormCliente(ModelForm):
             
 
         }
-
+class ImagenForm(ModelForm):
+        class Meta:
+            model = Imagenes
+            fields = ['titulo','imagen']
+            labels = {
+                'titulo': 'Titulo de imagen',
+                'imagen': 'Imagen',
+                     }
+            widgets = {
+                'titulo': TextInput(
+                    attrs = {
+                        'class':'form-control',
+                        'placeholder': 'Ingrese titulo',
+                        
+                }),
+                'imagen': FileInput (
+                    attrs = {
+                        'class':'form-control',
+                        'id': 'nombre',
+                }),
+            }
         
        
         

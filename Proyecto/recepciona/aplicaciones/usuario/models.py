@@ -30,6 +30,7 @@ class Centro(models.Model):
     nombre = models.CharField('Nombre de centro deportivo', max_length=200, blank = True, null = True)
     descripcion = models.CharField('Descripcion del centro', max_length = 500, null = True)
     imagen_portada = models.ImageField('Imagen de portada', upload_to='perfil/', max_length=200,blank = True,null = True)
+    acerca = models.CharField('Acerca de nosotros', max_length = 1000, null = True)
     logo = models.ImageField('Logo', upload_to='logo/', max_length=200,blank = True,null = True)
     direccion = models.CharField('Direccion', max_length = 100)    
     region = models.ForeignKey('direccion.Regiones', on_delete = models.CASCADE)
