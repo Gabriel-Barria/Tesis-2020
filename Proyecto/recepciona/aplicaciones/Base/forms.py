@@ -97,7 +97,7 @@ class CanchaForm(ModelForm):
 class HorarioForm(ModelForm):
     class Meta:
         model = Horario
-        fields = ['title','hora_inicio','hora_termino','dia', 'color']
+        fields = ['title','hora_inicio','hora_termino','dia']
         widgets = {
             'title': HiddenInput(
                 attrs = {
@@ -125,25 +125,18 @@ class HorarioForm(ModelForm):
                     
                 }
             ),
-            'color': HiddenInput(
-                attrs = {
-                    'class':'form-control',
-                    'placeholder': 'Color',
-                    'id': 'color',
-                    'value': '2',
-                }
-            ),
+            
 
         }
 class ReservaForm(ModelForm):
     class Meta:
         model = Reserva
-        fields = ['usuario', 'cancha', 'date_start', 'date_end', 'color']
+        fields = ['usuario', 'cancha', 'date_start', 'date_end']
 class ReservaFormCliente(ModelForm):
 
     class Meta:
         model = Reserva
-        fields = ['usuario', 'cancha', 'date_start', 'date_end', 'color']
+        fields = ['usuario', 'cancha', 'date_start', 'date_end']
         labels = {
             
             'date_start': 'Desde',
@@ -174,11 +167,7 @@ class ReservaFormCliente(ModelForm):
                 }
             ),
             
-            'color': HiddenInput(
-                attrs = {
-                   
-                }
-            ),
+            
             
 
         }

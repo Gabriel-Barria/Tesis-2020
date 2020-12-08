@@ -51,3 +51,33 @@ function registrar_usuario() {
       }
   });
 }
+
+
+
+function login() {
+  $.ajax({
+    type:"POST",
+    url:  $('#login_form').attr('action'),  
+    data: $('#login_form').serialize(),
+    beforeSend: function (xhr, settings) {
+      
+      var csrftoken = getCookie('csrftoken');
+      function csrfSafeMethod(method) {
+          // these HTTP methods do not require CSRF protection
+          return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+      if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      }
+  },
+    success: function(response){
+      
+      if (response['result'] == 'Success!')
+          console.log('me he logeado pero no puedo iniciar ')
+          
+      else    
+          console.log('llegue hasta aca del suses')
+          alert(response['message']);  
+ }
+});
+}

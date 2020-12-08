@@ -70,15 +70,7 @@ class Dias(ModeloBase):
     def __str__(self):
         return self.day_name
 
-class Color(ModeloBase):
-    codigo = models.CharField('Codigo del color', max_length = 50)
-    color_name = models.CharField('Nombre de color', max_length = 50)
 
-    class Meta:
-        verbose_name = 'Color'
-        verbose_name_plural = 'Colores'
-    def __str__(self):
-        return self.color_name
 
 class Horario(ModeloBase):
    
@@ -86,7 +78,7 @@ class Horario(ModeloBase):
     hora_inicio = models.CharField('hora inicio', max_length=8, null=True)
     hora_termino = models.CharField('hora termino', max_length=8, null=True)
     dia = models.ForeignKey(Dias, on_delete = models.CASCADE)
-    color = models.ForeignKey(Color, on_delete = models.CASCADE)
+    
     
     class Meta:
         verbose_name = 'Horario'
@@ -118,7 +110,7 @@ class Reserva(ModeloBase):
     cancha = models.ForeignKey(Cancha, on_delete=models.CASCADE)
     date_start = models.CharField('date_start',max_length=20)
     date_end = models.CharField('date_end', max_length=20)
-    color = models.ForeignKey(Color, on_delete = models.CASCADE)
+    
 
 
     class Meta:

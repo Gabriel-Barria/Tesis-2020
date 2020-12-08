@@ -21,20 +21,15 @@ class Inicio(TemplateView):
     def get_context_data(self,**kwargs):
          pk = self.kwargs.get('pk')
          context = {}
-        
-        
+         
          context['usuario'] = Usuario.objects.filter(usuario_administrador = False)
          context['reserva'] = Reserva.objects.filter(estado=True)
+         context['reserva_false'] = Reserva.objects.filter(estado=False)
          context['cancha'] = Cancha.objects.filter(estado=True)
          
-              
-        
          return context
     def get(self, request, *args, **kwargs):
         return render(request,self.template_name,self.get_context_data())
-
-
-
 class Inicio_home(ListView):
     template_name = 'home.html'
     model = Centro
@@ -64,7 +59,7 @@ class Inicio_home(ListView):
                     response.status_code = 201
                     return response
             else:
-                    mensaje = f'{self.model.__name__} No se ha podido registrar!' 
+                    mensaje = 'No se ha podido registrar!' 
                     error = form.errors
                     response = JsonResponse({'mensaje':mensaje,'error':error})
                     response.status_code = 400
@@ -611,8 +606,6 @@ class CrearHorario(CreateView):
     model = Horario
     template_name = 'Base/Horario/crear_horario.html'
     form_class = HorarioForm
-    
-
     def post(self,request,*args,**kwargs):
         if request.is_ajax():
             form = self.form_class(request.POST)

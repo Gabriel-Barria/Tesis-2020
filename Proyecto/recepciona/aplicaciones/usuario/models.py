@@ -28,10 +28,15 @@ class UsuarioManager(BaseUserManager):
 
 class Centro(models.Model):
     nombre = models.CharField('Nombre de centro deportivo', max_length=200, blank = True, null = True)
+    email = models.EmailField('Correo electronico', null = True, blank = True)
     descripcion = models.CharField('Descripcion del centro', max_length = 500, null = True)
     imagen_portada = models.ImageField('Imagen de portada', upload_to='perfil/', max_length=200,blank = True,null = True)
     acerca = models.CharField('Acerca de nosotros', max_length = 1000, null = True)
     logo = models.ImageField('Logo', upload_to='logo/', max_length=200,blank = True,null = True)
+    facebook = models.URLField('Facebook', max_length = 300, null = True, blank = True)
+    instagram = models.URLField('Instagram', max_length = 300, blank = True, null = True)
+    fono = models.CharField('Numero de contacto', max_length = 20, null = True, blank = True)
+    twitter = models.URLField('Twitter',max_length = 300, blank = True, null = True) 
     direccion = models.CharField('Direccion', max_length = 100)    
     region = models.ForeignKey('direccion.Regiones', on_delete = models.CASCADE)
     provincia = models.ForeignKey('direccion.Provincias', on_delete = models.CASCADE)  

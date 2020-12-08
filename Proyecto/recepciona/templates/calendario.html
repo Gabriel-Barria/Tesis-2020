@@ -25,64 +25,57 @@
         </div>
     </div>
     
-        <div id='calendar'></div>
+<div id='calendar'></div>
         
-        <style>
+<style>
+
      
 
             .fc-timegrid-slot {
                 height: 2.5em !important;
-            }   
-           </style>
+            }  
+            
+           
+</style>
     
-    <script>
-       
-   
-    
+<script>
 
-    
-    $(document).ready(function() {
-        
-          var calendarEl = document.getElementById('calendar');
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-            headerToolbar: {
+
+
+     $(document).ready(function() {
+                
+             var calendarEl = document.getElementById('calendar');
+             var calendar = new FullCalendar.Calendar(calendarEl, {
+                
+                
+                
+               
+                headerToolbar: {
             start: 'title',
             center: '',
-            end: 'today prev,next'
-        },
-                     selectable: true,                          
-    
-                     selectOverlap: function(event) {
-                         return event.rendering === 'background';
-                     },
-                     
-                     select: function(selectionInfo) {                                
-                         $('#myModal').modal('show');
-                         {% for c in cancha %}
-                         var cancha = {{ c.pk }};
-                         {% endfor %}
-                         var start = selectionInfo.startStr; 
-                         var end = selectionInfo.endStr;
-                         var user = {{ request.user.id }};
-                         var color = 2;
-                         $('#id_date_start').val(start);
-                         $('#id_date_end').val(end);
-                         $('#id_usuario').val(user);
-                         $('#id_cancha').val(cancha);
-                         $('#id_color').val(color);
-                    },
-                    
-                     slotDuration: '01:00',    
-                     slotLabelFormat:{
-                     hour: 'numeric',
-                     minute: '2-digit',
-                     omitZeroMinute: false,
-                     meridiem: 'false',
-                     
-                                     },
-                    initialView: 'timeGridThreeDay',
-                    timeZone: 'UTC',
-                    events:[
+            end: 'timeGridThreeDay today prev,next'},                         
+
+                
+                dateClick: function(info) {
+                    alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+            
+                    alert('Current view: ' + info.dateStr);
+                },
+                 
+                 
+                 contentHeight: 600,
+                 slotDuration: '01:00',    
+                 slotLabelFormat:{
+                 hour: 'numeric',
+                 minute: '2-digit',
+                 omitZeroMinute: false,
+                 meridiem: 'false',
+                                 },
+
+                                        
+                 initialView: 'timeGridThreeDay',
+                 timeZone: 'UTC',
+                 events:[
                 {% for i in horario %}
                     {
                       id: '{{ i.pk }}',
@@ -115,26 +108,35 @@
                     {% endifequal %}
                 {% endfor %}                               
                          ],
-                    views: {
-                        timeGridThreeDay: {
-                        type: 'timeGrid',
-                        duration: { days: 3 },
-                    }
-                   }
-               });
-                 calendar.setOption('locale','Es')
-                 calendar.render();
+                     
+                 
+               
+               views: {
+                 timeGridThreeDay: {
+                 type: 'timeGrid',
+                 duration: { days: 3 },
+                 
+                 }
+               }
+           
+             });
+             
+             calendar.setOption('locale','Es')
+             calendar.render();
+             
+           });  
 
-               
-               
-                });
+    
+
+    
+
         
                
                     
               
                
          
-    </script> 
+</script> 
 
 
 

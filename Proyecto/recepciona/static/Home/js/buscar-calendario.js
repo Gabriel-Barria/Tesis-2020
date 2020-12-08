@@ -3,13 +3,24 @@ function seleccionar_cancha(url){
           
     $('#contenedor-calendario').load(url, function(){
         $('#custom-content-below-messages-tab').click();
-        $(this).load('html');
+        
+        $(this).load('html',function(){
+            $('.fc-timeGridThreeDay-button').hide();
+            
+            
+        });
+        
+        
+        
+        
 
     });
+
     $('#custom-content-below-messages-tab').on('shown.bs.tab', function (e) {
-        console.log('se acaba de seleccionar la pestaña del calendario')
-        // TODO: check href of e.target to detect your tab
-        $('#calendar').render;
+        $('.fc-timeGridThreeDay-button').click();
+        
+        
+        
     });
    
       
@@ -24,10 +35,8 @@ function seleccionar_cancha(url){
                 $('#myModal').modal('hide');
                 notificacionSuccess(response.mensaje);
                 seleccionar_cancha($('#form_creacion').attr('name'));
-                
 
-                
-            },	
+},	
             error: function(error){
                 notificacionError(error.responseJSON.mensaje); 
                 mostrarErroresCreacion(error);
@@ -35,5 +44,8 @@ function seleccionar_cancha(url){
                 
             }
         });
+    }
+    function actualizar_tabla(){
+        $('#contenedor-calendario').updateSize();
     }
 

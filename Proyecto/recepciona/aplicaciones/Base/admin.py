@@ -9,7 +9,7 @@ admin.site.register(Horario)
 admin.site.register(Reserva)
 admin.site.register(Tipo_cancha)
 admin.site.register(Dias)
-admin.site.register(Color)
+
 
 
 

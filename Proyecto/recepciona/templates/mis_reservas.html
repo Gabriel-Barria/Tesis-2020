@@ -20,7 +20,7 @@ Listado de reservas
          
           <th>Cancha</th>  
           <th>Fecha reserva</th>
-          <th>Acciones</th>
+          
                          
         </tr>
       </thead>
@@ -32,7 +32,7 @@ Listado de reservas
             <td>{{ r.cancha }}</td>
             <td>{{ r.date_start }} a {{ r.date_end }}</td>         
 
-            <td><a href="{% url 'Descripcion_cancha' r.cancha.pk %}" class="btn btn-primary">Ver Cancha</a></td>
+            
           </tr>
             {% endfor %}
         

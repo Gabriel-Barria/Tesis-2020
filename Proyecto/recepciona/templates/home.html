@@ -33,8 +33,13 @@ background-position: center center;
 background-size: cover;
 }
 .tabs-reserva{
-width: 33%;
+width: 25%;
 }
+.tamaño-img{
+width: 100%;
+height: 100%;    
+}
+
 </style>
     <body id="page-top">
     <!-- Navigation-->
@@ -87,19 +92,21 @@ width: 33%;
         <div class="container">
             <div class="text-center">
                 <h2 class="section-heading text-uppercase">Acerca de nosotros</h2>
-                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus deserunt iusto autem veritatis. 
-                 Autem, sunt reprehenderit eaque doloremque dolor reiciendis! Similique aliquam nihil fugit, doloremque laboriosam ad dolorem tempore et.</h3>
-            </div>
+                {% for a in centro %}
+                <h3 class="section-subheading text-muted">{{ a.acerca }}</h3>
+                {% endfor %}        
+                </div>
         </div>
     </section>
 <!--Galeria-->
     <section class="page-section bg-light" id="portfolio">
         <div class="container">
             <div class="text-center">
-                <h2 class="section-heading text-uppercase">Galeria</h2>
-                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                <h2 class="section-heading text-uppercase">Galeria de imagenes</h2>
+                <h3 class="section-subheading text-muted"></h3>
             </div>
             <div class="row">
+                {% if imagen %}
                 {% for i in imagen %}
                 <div class="col-lg-4 col-sm-6 mb-4">
                     <div class="portfolio-item">
@@ -107,15 +114,22 @@ width: 33%;
                             <div class="portfolio-hover">
                                 <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="{{ i.imagen.url }}" alt="" />
+                            <img class="img-fluid tamaño-img" src="{{ i.imagen.url }}" alt="" />
                         </a>
                         <div class="portfolio-caption">
                             <div class="portfolio-caption-heading">{{ i.titulo }}</div>
                         </div>
                     </div>
                 </div>
+               {% endfor %}
+               {% else %}
+               <div class="container">
+               <div class="text-center">
+               <h3 class="section-subheading text-muted">Aun no se han cargado imagenes</h3>
+                </div>
+            </div>
+               {% endif %}
                
-                {% endfor %}
             </div>
         </div>
     </section>
@@ -123,9 +137,6 @@ width: 33%;
 {% if request.user.is_authenticated %}
     <section class="page-section" id="reserva">
         <div class="container">
-            <div class="text-center">
-                <h2 class="section-heading text-uppercase">Reservar</h2>
-            </div>
             <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
                 <li class="nav-item tabs-reserva">
                     <a class="nav-link active text-center" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Deportes</a>
@@ -136,8 +147,10 @@ width: 33%;
                 <li class="nav-item tabs-reserva">
                     <a class="nav-link text-center" id="custom-content-below-messages-tab" data-toggle="pill" href="#custom-content-below-messages" role="tab" aria-controls="custom-content-below-messages" aria-selected="false">Horario</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item tabs-reserva">
+                    <a class="nav-link text-center" id="" data-toggle="pill" href="#custom-content-below-messages" role="tab" aria-controls="custom-content-below-messages" aria-selected="false">Horario</a>
                 </li>
+               
             </ul>
             <div class="tab-content" id="custom-content-below-tabContent">
                 <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
@@ -156,6 +169,7 @@ width: 33%;
                     </div>
                 </div>
                 <div class="tab-pane fade" id="custom-content-below-messages" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
+                    
                     <div id="contenedor-calendario"></div>
                 </div>
             </div>

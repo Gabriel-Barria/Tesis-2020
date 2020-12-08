@@ -19,7 +19,7 @@ function ListaTipo(){
                 contenedor += '<div class="portfolio-hover-content">';
                 contenedor += '<i class="fas fa-plus fa-3x"></i>';
                 contenedor += '</div></div>';
-                contenedor += '<img class="img-fluid" src="/media/'+response[i]["fields"]['imagen']+'" alt=""/>';
+                contenedor += '<img class="img-fluid tamaño-img" src="/media/'+response[i]["fields"]['imagen']+'" alt=""/>';
                 contenedor += '</a>';
                 contenedor += '<div class="portfolio-caption">';
                 contenedor += '<div class="portfolio-caption-heading">'+response[i]["fields"]['nombre']+'</div>';

@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -12,7 +13,60 @@
                 <div id="erroresEdicion">
 
                 </div>
-                {{ form.as_p }}
+                <label>Nombre de usuario</label>
+                {{ form.username }}
+                <label>Email</label>
+                {{ form.email }}
+
+
+                <label>Nombres</label>
+                {{ form.nombres }} 
+           
+           
+                <label>Apellidos</label>
+                {{ form.apellidos }}
+                
+                
+
+               
+                <label>Direccion</label>
+                {{ form.direccion }}                                        
+            
+               
+
+                <label>{{ form.region.label }}</label>
+              
+                <select class="form-control" name="region" id="id_region">
+                    <option value="0">----------</option>
+                    {% for item in region %}
+                    <option value="{{item.region_id}}">{{item.region_nombre}}</option>
+                    {% endfor %}
+                </select>  
+            
+            
+           
+                <label>{{ form.provincia.label }} </label>                    
+                    <select class="form-control" name="provincia" id="id_provincia">
+                        <option value="0">----------</option>
+                        {% for item in provincia %}
+                        <option value="{{item.provincia_id}}" data-chained="{{item.region_id}}">{{item.provincia_nombre}}</option>
+                        {% endfor %}
+                    </select> 
+
+              
+         
+           
+                <label>{{ form.comuna.label }}</label>                    
+                    <select class="form-control" name="comuna" id="id_comuna">
+                        <option value="0">----------</option>
+                        {% for item in comuna %}
+                        <option value="{{item.comuna_id}}" data-chained="{{item.provincia_id}}" >{{item.comuna_nombre}}</option>
+                        {% endfor %}
+                    </select> 
+                
+                <label>Imagen</label>
+                    {{ form.imagen }}   
+
             </div>
             <div class="modal-footer">
                 <button class="btn btn-danger" type="button" onclick="cerrar_modal_edicion();">Cancelar</button>
@@ -24,3 +78,19 @@
 
     </div>
 </div>
+<script src="{% static 'js/lib/jquery.js' %}"></script>
+<script src="{% static 'js/lib/jquery.chained.js' %}"></script>
+
+<script>
+    $(function(){
+        $("#id_region").val("{{obj.provincia.region.region_id}}").change();
+        $("#id_provincia").val("{{obj.provincia.provincia_id}}").change();
+        $("#id_comuna").val("{{obj.comuna.comuna_id}}").change();
+       
+        $("#id_provincia").chained("#id_region");
+        $("#id_comuna").chained("#id_provincia");
+
+    })
+    
+
+</script>

@@ -27,7 +27,10 @@ class Login(FormView):
 
     def form_valid(self, form):
         login(self.request, form.get_user())
-        return super(Login, self).form_valid(form)
+        return HttpResponseRedirect(self.get_success_url())
+def logoutUsuario(request):
+    logout(request)
+    return HttpResponseRedirect('/')
 def logoutUsuario(request):
     logout(request)
     return HttpResponseRedirect('/')
@@ -129,6 +132,16 @@ class EditarPerfil(UpdateView):
     model = Usuario
     form_class = EditarPerfilForms
     template_name = 'usuarios/editar_perfil.html'
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs.get('pk')
+
+        context = super(EditarPerfil, self).get_context_data(**kwargs)
+        context["region"] = Regiones.objects.all()  
+        context["provincia"] = Provincias.objects.all()
+        context["comuna"] = Comunas.objects.all()
+        context["obj"] = Centro.objects.filter(pk=pk).first()
+        return context
     
     def post(self,request,*args,**kwargs):
         if request.is_ajax():
