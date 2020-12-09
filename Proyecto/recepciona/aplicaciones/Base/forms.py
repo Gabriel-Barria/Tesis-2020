@@ -136,16 +136,18 @@ class ReservaFormCliente(ModelForm):
 
     class Meta:
         model = Reserva
-        fields = ['usuario', 'cancha', 'date_start', 'date_end']
+        fields = ['usuario', 'cancha', 'date_start', 'date_end','comprobante']
         labels = {
             
             'date_start': 'Desde',
             'date_end': 'Hasta',
+            'comprobante':'Comprobante de pago'
             }
 
         widgets = {
             'usuario': HiddenInput(
                 attrs = {
+                    
                  
                 }
             ),
@@ -156,21 +158,45 @@ class ReservaFormCliente(ModelForm):
             ),
             'date_start':TextInput(
                 attrs = {
-                    'readonly': 'true'
+                    'readonly': 'true',
+                    'class':'form-control'
                     
                     
                 }
             ),
             'date_end': TextInput(
-                attrs = {                    
+                attrs = {   
+                   'class':'form-control',                 
                    'readonly': 'true' 
                 }
             ),
+            
+           'comprobante': FileInput(
+                attrs = {   
+                   'class':'form-control',                 
+                   
+                }
+            )
+            
             
             
             
 
         }
+class FormReservaFalse(ModelForm):
+
+    class Meta:
+        model = Reserva
+        fields = ['estado']
+    
+        widgets = {
+            'estado': HiddenInput(
+                attrs = {
+                   
+                 
+                }
+            )}
+    
 class ImagenForm(ModelForm):
         class Meta:
             model = Imagenes

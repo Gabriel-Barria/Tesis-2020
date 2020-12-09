@@ -13,9 +13,30 @@
     
                 </div>
                 <div class="modal-body">
-                    <form id="form_creacion" action="{% url 'inicio_home' %}" method="POST" name="{% url 'mostrar-calendario' c.pk %}">
+                    <div id="errores" ></div>
+                    <a onclick="mostrar_info();" class="badge badge-info">Datos de cuenta a depositar</a> <br>
+                    <div hidden class="alert alert-info" role="alert" id="info_cuenta">
+                        Recuerda adjuntar la captura completa, donde se vea todos los datos del pago y la cuenta destinataría. <br>
+                        Datos de cuenta: <br>
+                        Nº de cuenta: <br>
+                        Banco: <br>
+                        Nombre: <br>
+                    </div>
+                    Total a pagar:
+
+                    <input type="text" class="form-control" readonly="True" value="${{ c.valor }}"> <br>
+                    <form id="form_creacion" action="{% url 'inicio_home' %}" method="POST" name="{% url 'mostrar-calendario' c.pk %}" enctype="multipart/form-data">
                         {% csrf_token %}  
                         {{ form.as_p }}
+                       <!-- Desde (Hora inicio):
+                        {{ form.date_start }} <br>
+                        Hasta (Hora de termino):
+                        {{ form.date_end}} <br>
+                        Comprobante de pago:
+                       
+                        {{ form.comprobante }} <br>
+                        -->
+                        
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         <button type="button" class="btn btn-primary" onclick="registrar();">Reservar</button>             
                     </form>
@@ -39,10 +60,7 @@
 </style>
     
 <script>
-
-
-
-     $(document).ready(function() {
+$(document).ready(function() {
                 
              var calendarEl = document.getElementById('calendar');
              var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -56,10 +74,26 @@
             end: 'timeGridThreeDay today prev,next'},                         
 
                 
-                dateClick: function(info) {
-                    alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-            
-                    alert('Current view: ' + info.dateStr);
+                            selectable: true,                          
+
+                selectOverlap: function(event) {
+                    return event.rendering === 'background';
+                },
+
+                select: function(selectionInfo) {                                
+                    $('#myModal').modal('show');
+                    {% for c in cancha %}
+                    var cancha = {{ c.pk }};
+                    {% endfor %}
+                    var start = selectionInfo.startStr; 
+                    var end = selectionInfo.endStr;
+                    var user = {{ request.user.id }};
+                    var color = 2;
+                    $('#id_date_start').val(start);
+                    $('#id_date_end').val(end);
+                    $('#id_usuario').val(user);
+                    $('#id_cancha').val(cancha);
+                    $('#id_color').val(color);
                 },
                  
                  
@@ -88,16 +122,16 @@
                 {% endfor %}
                 
                 {% for e in reserva %}
-                    {% ifequal request.user.pk e.usuario.pk %}                
+                    {% ifequal request.user.pk e.usuario.pk %} 
                             {
                                 id: 'e.pk',
                                 title: 'Tu reserva',
                                 start: '{{ e.date_start }}',
                                 end: '{{ e.date_end }}',
-                                color: '#28a745',/*succes*/
+                                color: '#28a745',/*succes*//*#FFBE33*/
                             },
                         {% else %}
-                            {
+                        {
                                 id: 'e.pk',
                                 title: 'Ocupado',
                                 start: '{{ e.date_start }}',
@@ -106,7 +140,25 @@
                             },
 
                     {% endifequal %}
-                {% endfor %}                               
+                            
+                {% endfor %} 
+                    {% for false in reserva_false %}
+                            {% ifequal request.user.pk false.usuario.pk  %}
+                            {
+                                        id: 'e.pk',
+                                        title: 'Reserva Pendiente',
+                                        start: '{{ false.date_start }}',
+                                        end: '{{ false.date_end }}',
+                                        color: '#FFBE33',/*orange*/
+                                    },
+                                                                       
+                                {% else %}
+                                     
+                                    
+                                    
+                            {% endifequal %}
+                                
+                            {% endfor %}                              
                          ],
                      
                  
@@ -126,6 +178,10 @@
              
            });  
 
+function mostrar_info(){
+    $('#info_cuenta').removeAttr('hidden');
+    
+}
     
 
     

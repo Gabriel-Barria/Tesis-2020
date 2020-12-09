@@ -33,7 +33,7 @@ background-position: center center;
 background-size: cover;
 }
 .tabs-reserva{
-width: 25%;
+width: 33%;
 }
 .tamaño-img{
 width: 100%;
@@ -141,15 +141,14 @@ height: 100%;
                 <li class="nav-item tabs-reserva">
                     <a class="nav-link active text-center" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Deportes</a>
                 </li>
+               
                 <li class="nav-item tabs-reserva">
                     <a class="nav-link text-center" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Canchas</a>
                 </li>
                 <li class="nav-item tabs-reserva">
                     <a class="nav-link text-center" id="custom-content-below-messages-tab" data-toggle="pill" href="#custom-content-below-messages" role="tab" aria-controls="custom-content-below-messages" aria-selected="false">Horario</a>
                 </li>
-                <li class="nav-item tabs-reserva">
-                    <a class="nav-link text-center" id="" data-toggle="pill" href="#custom-content-below-messages" role="tab" aria-controls="custom-content-below-messages" aria-selected="false">Horario</a>
-                </li>
+                
                
             </ul>
             <div class="tab-content" id="custom-content-below-tabContent">
@@ -216,14 +215,17 @@ height: 100%;
 <!-- Contact form JS-->
         <script src="{% static 'Home/assets/mail/jqBootstrapValidation.js' %}"></script>
         <script src="{% static 'Home/assets/mail/contact_me.js' %}"></script>
+        <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
 <!-- Core theme JS-->
         <script src="{% static 'Home/js/scripts.js' %}"></script>
         <script src="{% static 'Home/js/index_home.js' %}"></script>
         <script src="{% static 'Home/js/buscar-cancha.js' %}"></script>
         <script src="{% static 'Home/js/calendario.js' %}"></script>
         <script src="{% static 'Home/js/buscar-calendario.js' %}"></script>
+        <script src="{% static 'Home/js/buscar-fecha.js' %}"></script>
         <script src="{% static 'Home/js/modal_login.js' %}"></script>
         <script src="{% static 'js/lib/main.js' %}"></script> 
+        <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script> 
         <script src="{% static 'js/main.js' %}"></script> 
     </body>
 </html>

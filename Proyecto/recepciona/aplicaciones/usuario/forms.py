@@ -348,7 +348,10 @@ class FormUser(ModelForm):
         if commit:
             user.save()
         return user
-
+class CustomAuthenticationForm(AuthenticationForm):
+    class Meta:
+        model = Usuario
+        fields = ['username', 'password']
 
 
 

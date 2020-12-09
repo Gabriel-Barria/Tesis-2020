@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'aplicaciones.usuario',
     'aplicaciones.direccion',
+    'bootstrap_modal_forms',
     
     
     
@@ -74,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'aplicaciones.Base.context_processors.mis_variables',
             ],
         },
     },

@@ -18,7 +18,8 @@ Listado de reservas
       <thead>
         <tr>
          
-          <th>Cancha</th>  
+          <th>Cancha</th>
+          <th>Estado</th>   
           <th>Fecha reserva</th>
           
                          
@@ -30,6 +31,11 @@ Listado de reservas
             <tr>
             
             <td>{{ r.cancha }}</td>
+            {% ifequal r.estado False %}
+            <td>Pendiente</td>
+            {% else %}
+            <td>Confirmado</td>
+            {% endifequal %}
             <td>{{ r.date_start }} a {{ r.date_end }}</td>         
 
             

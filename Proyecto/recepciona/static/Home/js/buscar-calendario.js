@@ -27,10 +27,15 @@ function seleccionar_cancha(url){
 
     }
     function registrar(){
-        $.ajax({
-            data: $('#form_creacion').serialize(),
-            url:  $('#form_creacion').attr('action'),
-            type: $('#form_creacion').attr('method'),
+        var data = new FormData($('#form_creacion').get(0));
+    
+                $.ajax({
+                    data: data,
+                    url: $('#form_creacion').attr('action'),
+                    type: $('#form_creacion').attr('method'),
+                    cache:false,
+                    contentType:false,
+                    processData:false,
             success: function(response){
                 $('#myModal').modal('hide');
                 notificacionSuccess(response.mensaje);

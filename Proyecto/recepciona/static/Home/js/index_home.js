@@ -23,6 +23,11 @@ function ListaTipo(){
                 contenedor += '</a>';
                 contenedor += '<div class="portfolio-caption">';
                 contenedor += '<div class="portfolio-caption-heading">'+response[i]["fields"]['nombre']+'</div>';
+                /*
+                el botón a continuacion permite enviar la clave primaria de el tipo de cancha, 
+                la envia a la funcion buscar_fecha ubicada en Home/js/buscar-fecha.js
+                para que se cargue un formulario con calendario y hora
+                */
                 contenedor += '<button class="btn btn-primary" onclick = "seleccionar_deporte(\'/filtro-cancha/' + response[i]['pk']+'/\');">Seleccionar</button>';
                 contenedor += '</div></div>';
             } 

@@ -1,15 +1,15 @@
 var $ = jQuery.noConflict();
-function listadoReserva(){
+function listadoReservaFalse(){
     $.ajax({
-        url:"/Base/Reserva/listar_reserva/",
+        url:"/Base/Reserva/listar_reserva_false/",
         type:"get",
         dataType:"json",
         success: function(response){
-            if($.fn.DataTable.isDataTable('#tabla_reservas')){
-                $('#tabla_reservas').DataTable().destroy();
+            if($.fn.DataTable.isDataTable('#tabla_reservas_false')){
+                $('#tabla_reservas_false').DataTable().destroy();
             }
             console.log(response);
-            $('#tabla_reservas tbody').html("");
+            $('#tabla_reservas_false tbody').html("");
             for(let i = 0;i < response.length;i++){
                 let fila = '<tr>';
                 fila += '<td>' + (i +1) + '</td>';
@@ -17,15 +17,16 @@ function listadoReserva(){
                 fila += '<td>' + response[i]["fields"]['cancha'] + '</td>';
                 fila += '<td>' + response[i]["fields"]['date_start'] + '</td>';
                 fila += '<td>' + response[i]["fields"]['date_end'] + '</td>';
+                fila += '<td><div class="round-img"><img class="rounded-circle" onclick="mostrar_imagen(\'/Base/comprobante/' + response[i]['pk']+'/\');" src="/media/'+response[i]["fields"]['comprobante']+'" alt=""></div></td>';
                 fila += '<td><button type = "button" class = "btn btn-primary btn-sm tableButton"';
-                fila += ' onclick = "abrir_modal_edicion(\'/Base/actualizar_reserva/' + response[i]['pk']+'/\');"> EDITAR </button>';
+                fila += ' onclick = "abrir_modal_edicion(\'/Base/actualizar_reserva_false/' + response[i]['pk']+'/\');">CONFIRMAR</button>';
                 fila += '<button type = "button" class = "btn btn-danger tableButton  btn-sm" ';
-                fila += 'onclick = "abrir_modal_eliminacion(\'/Base/eliminar_reserva/' + response[i]['pk'] +'/\');"> ELIMINAR </buttton></td>';
+                fila += 'onclick = "abrir_modal_eliminacion(\'/Base/eliminar_reserva_false/' + response[i]['pk'] +'/\');"> ELIMINAR </buttton></td>';
                 fila += '</tr>';
 
-                $('#tabla_reservas tbody').append(fila);
+                $('#tabla_reservas_false tbody').append(fila);
             }
-            $('#tabla_reservas').DataTable({
+            $('#tabla_reservas_false').DataTable({
                 language: {
                     decimal: "",
                     emptyTable: "No hay información",
@@ -84,7 +85,7 @@ function editar(){
         processData:false,
         success: function (response) {
             notificacionSuccess(response.mensaje);
-            listadoReserva();
+            listadoReservaFalse();
             cerrar_modal_edicion();
         },
         error: function (error) {
@@ -99,11 +100,11 @@ function eliminar(pk) {
         data:{
             csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
         },
-        url: '/Base/eliminar_reserva/'+pk+'/',
+        url: '/Base/eliminar_reserva_false/'+pk+'/',
         type: 'post',
         success: function (response) {
             notificacionSuccess(response.mensaje);
-            listadoReserva();
+            listadoReservaFalse();
             cerrar_modal_eliminacion();
         },
         error: function (error) {
@@ -111,7 +112,15 @@ function eliminar(pk) {
         }
     });
 }
-
+function mostrar_imagen(url){    
+    $('#comprobante').load(url, function(){
+      $(this).modal('show');
+    });
+  }
+function cerrar_modal(){
+	$('#comprobante').modal('hide');
+	
+}
 $(document).ready(function (){
-    listadoReserva();
+    listadoReservaFalse();
 });

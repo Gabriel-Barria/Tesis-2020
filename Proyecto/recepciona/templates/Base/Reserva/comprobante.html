@@ -2,19 +2,19 @@
     <div class="modal-content">
         
         <div class="modal-header">
-            {% for i in imagen %} 
-            <h2 class="modal-title">{{ i.titulo }}</h2>
-            {% endfor %}
+            
+            <h2 class="modal-title">Comprobante de pago </h2>
+            
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         
-           
+            
             <div class="modal-body">
-              {% for i in imagen %}    
+              {% for i in reserva %}    
               <div class="text-center">        
-               <img src="{{ i.imagen.url }}" alt="">
+               <img src="{{ i.comprobante.url }}" alt="">
             </div>  
               {% endfor %}
             </div>

@@ -1,7 +1,7 @@
 from django.urls import include, path
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
-from .views import CrearServicio, ListadoServicio, ActualizarServicio, EliminarServicio, CrearCancha, ListadoCancha, ActualizarCancha, EliminarCancha, CrearSuperficie, ListadoSuperficie, ActualizarSuperficie, EliminarSuperficie, CrearHorario, ListadoHorario, ActualizarHorario, EliminarHorario, CrearTipo, ListadoTipo, ActualizarTipo, EliminarTipo, CrearReserva, ListadoReservas, ActualizarReserva, EliminarReserva,  Descripcion_cancha, MisReservas, Filtro_cancha , CrearImagen , ListadoImagenes, ActualizarImagenes, EliminarImagen, MostrarImagen
+from .views import *
 from . import views
 urlpatterns = [
     path('Servicio/crear_servicio/',login_required(CrearServicio.as_view()), name = 'crear_servicio'),
@@ -42,6 +42,12 @@ urlpatterns = [
     path('inicio_reserva/',login_required(TemplateView.as_view(template_name='Base/Reserva/listar_reserva.html')),name='inicio_reserva'),
     path('actualizar_reserva/<int:pk>/',login_required(ActualizarReserva.as_view()), name = 'actualizar_reserva'),
     path('eliminar_reserva/<int:pk>/',login_required(EliminarReserva.as_view()), name = 'eliminar_reserva'),
+    #Direcciones de reserva false
+    path('Reserva/listar_reserva_false/',login_required(ListadoReservasFalse.as_view()), name = 'listar_reserva_false'),
+    path('inicio_reserva_false/',login_required(TemplateView.as_view(template_name='Base/Reserva/listar_reserva_false.html')),name='inicio_reserva_false'),
+    path('actualizar_reserva_false/<int:pk>/',login_required(ActualizarReservaFalse.as_view()), name = 'actualizar_reserva_false'),
+    path('eliminar_reserva_false/<int:pk>/',login_required(EliminarReservaFalse.as_view()), name = 'eliminar_reserva_false'),
+    path('comprobante/<int:pk>/',login_required(MostrarComprobante.as_view()), name = 'comprobante'),
 
     #CRUD IMAGENES
     path('Imagen/crear_imagen/',login_required(CrearImagen.as_view()), name = 'crear_imagen'),

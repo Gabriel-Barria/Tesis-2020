@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import ServicioForm, SuperficieForm, HorarioForm, CanchaForm, TipoForm, ReservaForm, ReservaFormCliente, ImagenForm
+from .forms import ServicioForm, SuperficieForm, HorarioForm, CanchaForm, TipoForm,FormReservaFalse, ReservaForm, ReservaFormCliente, ImagenForm
 from django.views.generic import View, TemplateView, ListView, UpdateView, CreateView, DeleteView, DetailView
 from .models import Servicio, Superficie,  Cancha, Tipo_cancha,  Imagenes, Horario, Reserva
 from aplicaciones.usuario.models import Centro, Usuario
@@ -50,7 +50,7 @@ class Inicio_home(ListView):
         return render(request,self.template_name,self.get_context_data())
     def post(self,request,*args,**kwargs):
         if request.is_ajax():
-            form = self.form_class(request.POST)
+            form = self.form_class(request.POST, request.FILES)
             if form.is_valid():
                     form.save()
                     mensaje = 'Reserva realizada con exito!' 
@@ -109,7 +109,8 @@ class MostrarCalendario(View):
          pk = self.kwargs.get('pk')
          context = {}
          context['horario'] = Horario.objects.filter(estado=True)
-         context['reserva'] = Reserva.objects.filter(cancha=pk, estado=True) 
+         context['reserva'] = Reserva.objects.filter(cancha=pk,estado=True) 
+         context['reserva_false'] = Reserva.objects.filter(cancha=pk,estado=False) 
          context['cancha'] = Cancha.objects.filter(pk=pk,estado=True)
          context['form'] = self.form_class      
         
@@ -489,6 +490,74 @@ class MisReservas(View):
 
     def get(self, request, *args, **kwargs):
         return render(request,self.template_name,self.get_context_data())
+#FUNCIONES PARA RESERVAS EN ESTADO FALSE
+class ListadoReservasFalse(ListView):
+    model = Reserva
+    template_name = 'Base/Reserva/listar_reserva_false.html'
+    def get_queryset(self):
+        return self.model.objects.filter(estado=False)
+    
+    def get(self,request,*args,**kwargs):
+        
+        if request.is_ajax():
+           
+            return HttpResponse(serialize('json',self.get_queryset()),'application/json')
+        else:
+            return redirect('Base:inicio_reserva_false')
+class ActualizarReservaFalse(UpdateView):
+    model = Reserva
+    form_class = FormReservaFalse
+    template_name = 'Base/Reserva/editar_reserva_false.html'
+    
+    def post(self,request,*args,**kwargs):
+        if request.is_ajax():
+            form = self.form_class(request.POST,request.FILES,instance = self.get_object())
+            if form.is_valid():
+                form.save()
+                mensaje = f'{self.model.__name__} Reserva confirmada correctamente!'
+                error = 'No hay error!'
+                response = JsonResponse({'mensaje': mensaje, 'error': error})
+                response.status_code = 201
+                return response
+            else:
+                mensaje = f'{self.model.__name__} No se ha podido confirmar la reserva!'
+                error = form.errors
+                response = JsonResponse({'mensaje': mensaje, 'error': error})
+                response.status_code = 400
+                return response
+        else:
+             return redirect('Base:inicio_reserva_false')
+class MostrarComprobante(View):
+    model = Reserva
+    template_name = 'Base/Reserva/comprobante.html'
+    form_class = ImagenForm
+
+    def get(self, request, *args, **kwargs):
+        return render(request,self.template_name, self.get_context_data())
+
+    def get_context_data(self,**kwargs):
+         pk = self.kwargs.get('pk')
+         context = {}
+         context['reserva'] = Reserva.objects.filter(pk=pk)
+
+         return context  
+class EliminarReservaFalse(DeleteView):
+    model = Reserva
+    form_class = ReservaForm
+    template_name = 'Base/Reserva/eliminar_reserva_false.html'
+    def delete(self,request,*args,**kwargs):
+        if request.is_ajax():
+            reserva = self.get_object()
+            
+            reserva.delete()
+            mensaje = f'{self.model.__name__} eliminado correctamente!'
+            error = 'No hay error!'
+            response = JsonResponse({'mensaje': mensaje, 'error': error})
+            response.status_code = 201
+            return response
+        else:
+            return redirect('Base:inicio_servicio_false')
+
 #CRUD TIPO DE CANCHA
 class ListadoTipo(ListView):
     model = Tipo_cancha
